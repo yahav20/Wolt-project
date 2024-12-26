@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foo Delivery - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .title {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .restaurant-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .restaurant-list h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .restaurant-list ul {
+            list-style: none;
+        }
+
+        .restaurant-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .restaurant-list a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .restaurant-list a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Foo Delivery</h1>
+    <div class="restaurant-list">
+        <h2>Available Restaurants</h2>
+        <ul>
+            <li>
+                <span>Pizza Palace</span>
+                <a href="#">Order Now</a>
+            </li>
+            <li>
+                <span>Burger Bistro</span>
+                <a href="#">Order Now</a>
+            </li>
+            <li>
+                <span>Sushi Spot</span>
+                <a href="#">Order Now</a>
+            </li>
+            <li>
+                <span>Vegan Delights</span>
+                <a href="#">Order Now</a>
+            </li>
+            <li>
+                <span>Taco Town</span>
+                <a href="#">Order Now</a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
