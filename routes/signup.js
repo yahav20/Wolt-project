@@ -9,10 +9,10 @@ router.get('/', (req, res) => {
 
 // Handle signup form submission
 router.post('/', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, address } = req.body;
 
     try {
-        const user = await userService.createUser(name, email, password);
+        const user = await userService.createUser(name, email, password, address);
         if (user) {
             // Redirect to login after successful signup
             res.redirect('/login');

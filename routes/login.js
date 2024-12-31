@@ -1,22 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const userService = require('../services/user'); // Adjust the path as needed
+const userService = require('../services/user'); 
 
-// Render the login page
 router.get('/', (req, res) => {
-    res.render('login.ejs'); // Assuming your EJS file is named `login.ejs`
+    res.render('login.ejs'); 
 });
 
-// Handle login form submission
 router.post('/', async (req, res) => {
     const { email, password } = req.body;
 
     try {
         const user = await userService.authenticateUser(email, password);
         if (user) {
-            // Set up session or token logic
-            req.session.userId = user._id; // Example using sessions
-            res.redirect('/dashboard'); // Redirect to a dashboard or other authenticated page
+            req.session.userId = user._id; 
+            res.redirect('/dashboard');
         } else {
             res.render('login.ejs', { error: 'Invalid email or password' });
         }

@@ -9,8 +9,15 @@ const isAuthenticated = (req, res, next) => {
     res.redirect('/login');
 };
 
-// Render the dashboard page, only if authenticated
-router.get('/', isAuthenticated, (req, res) => {
+const preventCache = (req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    next();
+};
+
+// Apply both middlewares to the dashboard route
+router.get('/', isAuthenticated, preventCache, (req, res) => {
     res.render('dashboard.ejs'); // Assuming your EJS file is named `dashboard.ejs`
 });
 

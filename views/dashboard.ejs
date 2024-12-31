@@ -26,6 +26,27 @@
             font-size: 2.5rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .signout-btn {
+            padding: 10px 15px;
+            background: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .signout-btn:hover {
+            background: #c9302c;
         }
 
         .restaurant-list {
@@ -71,7 +92,10 @@
     </style>
 </head>
 <body>
-    <h1 class="title">Foo Delivery</h1>
+    <header class="title">
+        <span>Foo Delivery</span>
+        <button class="signout-btn" onclick="location.href='/signout'">Sign Out</button>
+    </header>
     <div class="restaurant-list">
         <h2>Available Restaurants</h2>
         <ul>

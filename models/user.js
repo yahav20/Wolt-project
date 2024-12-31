@@ -14,6 +14,10 @@ const User = new Schema ({
         type: String,
         default: Date.now
     },
+    address: {
+        type: String,
+        required: true,
+    },
     orderHistory: {
         type: String
     }
