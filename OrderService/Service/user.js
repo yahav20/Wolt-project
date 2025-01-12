@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const USER_SERVICE = "http://localhost:5000/restaurants";
+const USER_SERVICE = "http://localhost:5000/users";
 
 async function getUserById(id) {
   try {
