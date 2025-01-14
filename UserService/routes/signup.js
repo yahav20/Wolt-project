@@ -1,28 +1,40 @@
+// signup.js
 const express = require('express');
 const router = express.Router();
-const userService = require('../services/user'); // Adjust the path to your user service
+const userService = require('../services/user'); // Your DB logic for creating users
 
-// Render the signup page
-router.get('/', (req, res) => {
-    res.render('signup.ejs'); // Render the signup EJS page
-});
-
-// Handle signup form submission
+// POST /signup - creates a user in the DB
 router.post('/', async (req, res) => {
     const { name, email, password, address } = req.body;
-
+    
     try {
+        // Attempt to create a new user in the database
         const user = await userService.createUser(name, email, password, address);
-        if (user) {
-            // Redirect to login after successful signup
-            res.redirect('/login');
-        } else {
-            // If user creation fails, reload signup page with an error
-            res.render('signup.ejs', { error: 'Unable to create account. Please try again.' });
+        if (!user) {
+            // Couldn’t create user
+            return res.status(400).json({
+                success: false,
+                message: 'Unable to create user. Please try again.',
+            });
         }
+        
+        // Created successfully
+        return res.status(201).json({
+            success: true,
+            message: 'User created successfully',
+            user: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+            },
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).render('signup.ejs', { error: 'An unexpected error occurred.' });
+        return res.status(500).json({
+            success: false,
+            message: 'An unexpected error occurred.',
+            error: error.message,
+        });
     }
 });
 
