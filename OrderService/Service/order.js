@@ -1,37 +1,46 @@
-const Order = require("../model/order");
+const Order = require("../models/Order");
 const restaurantService = require("../services/restaurant");
 const userService = require("../services/user");
 
-async function CreateOrder(userId, restaurantId, items) {
+async function createOrder(data) {
+  const { restaurantId, userId, menuItems } = data;
+  
   // Fetch restaurant and user details
   const restaurant = await restaurantService.getRestaurantById(restaurantId);
   // Fetch user details
   const user = await userService.getUserById(userId);
-  // Check if restaurant exists
-  if (!restaurant) return { error: "Restaurant not found" };
-  // Check if user exists
-  if (!user) return { error: "User not found" };
-  // Calculate total
-  const total = calculateTotal(items);
-  // Create and save order
+
+  if (!restaurant.data || !user.data) {
+    throw new Error("Invalid restaurant or user data");
+  }
+  const total = calculateTotal(menuItems);
+  // Save order to DB
   const order = new Order({
     userId,
     userAddress: user.address,
     restaurantId,
     restaurantName: restaurant.name,
-    items,
+    menuItems,
     total,
-    status: OrderStatus.NEW,
+    status: "Pending",
   });
-  //save order
   await order.save();
-  //update user order history
-  await userService.updateOrderHistory(userId, items);
+
+  return order;
 }
 
+async function updateOrderStatus(orderId, status) {
+  const order = await Order.findById(orderId);
+  if (!order) {
+    throw new Error("Order not found");
+  }
+  order.status = status;
+  await order.save();
+  return order;
+}
 // Helper function to calculate total order price
 const calculateTotal = (items) => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  return items.reduce((total, item) => total + item.price * item.quantity, 0);
+};
 
-module.exports = { CreateOrder };
+module.exports = { createOrder, updateOrderStatus };

@@ -19,7 +19,7 @@ mongoose
     console.error("MongoDB connection error:", err.message);
   });
 
-app.use("/order", orderRoute);
+app.use("/api/orders", orderRoute);
 
 // Start the server
 const PORT = 4000;

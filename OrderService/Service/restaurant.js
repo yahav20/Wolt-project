@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const RESTAURANT_SERVICE = "http://localhost:5000/restaurants";
+const RESTAURANT_SERVICE = "http://localhost:5000/api/restaurants";
 
 async function getRestaurantById(id) {
   try {

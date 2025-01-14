@@ -4,11 +4,9 @@ const OrderController= require("../controllers/order");
 const router = express.Router();
 
 // Create a new order
-router.post("/", OrderController.createOrder);
-
+router.post("/", OrderController.createOrderHandler);
 // Update order status
-router.patch("/:id/status", OrderController.updateOrderStatus);
-
+router.patch("/:id/status", OrderController.updateOrderStatusHandler);
 // Get all orders
 router.get("/", OrderController.getAllOrders);
 

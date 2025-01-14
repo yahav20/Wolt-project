@@ -1,0 +1,4 @@
+# Ignore configuration files
+config/
+# Ignore node modules
+node_modules/
