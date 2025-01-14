@@ -17,11 +17,9 @@ const deleteRestaurant = async (restaurantId) => {
 // View details of a specific restaurant
 const getRestaurantDetails = async (restaurantId) => {
     return await Restaurant.findById(restaurantId)
-        .populate({
-            path: 'menu',
-            populate: { path: 'category' } // Populates category details in the menu
-        });
+        .populate('menu'); // Populate menu with CategoryItem documents
 };
+
 
 // Update restaurant details
 const updateRestaurantDetails = async (restaurantId, updates) => {

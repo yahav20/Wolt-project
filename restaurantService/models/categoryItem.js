@@ -3,11 +3,6 @@ const itemSchema = require('./item'); // Import the Item schema
 
 // CategoryItem Schema
 const categoryItemSchema = new mongoose.Schema({
-    category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
-    },
     name: {
         type: String,
         required: true,
