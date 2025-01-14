@@ -27,8 +27,22 @@ const getItemsInCategory = async (categoryId) => {
     return category.items;
 };
 
+// Get a specific item by its ID in a specific category
+const getItemById = async (categoryId, itemId) => {
+    const category = await CategoryItem.findById(categoryId);
+    if (!category) throw new Error('Category not found');
+
+    const item = category.items.find(
+        (item) => item._id.toString() === itemId
+    );
+
+    if (!item) throw new Error('Item not found');
+    return item;
+};
+
 module.exports = {
     addItemToCategory,
     deleteItemFromCategory,
-    getItemsInCategory
+    getItemsInCategory,
+    getItemById
 };

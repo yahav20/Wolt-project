@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const categoryItemController = require('../controllers/categoryItemController');
+const categoryItemController = require('../controllers/categoryItem');
 
 // Add a new category to the menu
 router.post('/:restaurantId', categoryItemController.addCategoryToMenu);

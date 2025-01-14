@@ -1,4 +1,4 @@
-const categoryItemService = require('../services/categoryItemService');
+const categoryItemService = require('../services/categoryItem');
 
 // Add a new category to the menu
 const addCategoryToMenu = async (req, res) => {

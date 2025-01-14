@@ -1,4 +1,4 @@
-const itemService = require('../services/itemService');
+const itemService = require('../services/item');
 
 // Add an item to a specific category
 const addItemToCategory = async (req, res) => {
@@ -30,8 +30,19 @@ const getItemsInCategory = async (req, res) => {
     }
 };
 
+// Get a specific item by its ID in a category
+const getItemById = async (req, res) => {
+    try {
+        const item = await itemService.getItemById(req.params.categoryId, req.params.itemId);
+        res.json(item);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+};
+
 module.exports = {
     addItemToCategory,
     deleteItemFromCategory,
-    getItemsInCategory
+    getItemsInCategory,
+    getItemById
 };
