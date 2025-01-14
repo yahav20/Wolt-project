@@ -1,5 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const express = require('express');
+const {isAuthenticated} = require('../../controllers/auth')
 const router = express.Router();
 require('custom-env').env(process.env.NODE_ENV,'./config');
 USERS_SERVICE = process.env.USERS_SERVICE;
@@ -21,7 +22,7 @@ router.use(
   })
 );
 router.use(
-  '/id/:id',
+  '/id/:id', isAuthenticated,
   createProxyMiddleware({
     target: USERS_SERVICE,
     changeOrigin: true,
