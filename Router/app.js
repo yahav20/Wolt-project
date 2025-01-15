@@ -5,8 +5,9 @@ const apiRoutes = require('./routes/api');
 const dashboardRoute = require('./routes/dashboard')
 
 app.use('/api', apiRoutes);
-app.use('/', dashboardRoute);
-
+app.use('/', (req, res) => {
+  res.send('API Gateway is working');
+});
 app.listen(PORT, () => {
   console.log(`API Gateway listening on port ${PORT}`);
 });
