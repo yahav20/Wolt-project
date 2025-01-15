@@ -55,11 +55,20 @@ const getFilteredMenu = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+const getAllRestaurantsWithoutMenu = async (req, res) => {
+    try {
+        const restaurants = await restaurantService.getAllRestaurantsWithoutMenu();
+        res.status(200).json(restaurants);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 module.exports = {
     addRestaurant,
     deleteRestaurant,
     getRestaurantDetails,
     updateRestaurantDetails,
-    getFilteredMenu
+    getFilteredMenu,
+    getAllRestaurantsWithoutMenu 
 };
