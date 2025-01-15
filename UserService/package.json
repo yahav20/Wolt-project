@@ -95,6 +95,7 @@
     "whatwg-url": "^13.0.0"
   },
   "scripts": {
+    "start": "SET NODE_ENV=local && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
