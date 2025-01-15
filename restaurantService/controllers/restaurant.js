@@ -1,10 +1,11 @@
 const restaurantService = require('../services/restaurant');
 
-// Add a new restaurant
+// Add a new restaurant with menu
 const addRestaurant = async (req, res) => {
     try {
-        const restaurant = await restaurantService.addRestaurant(req.body);
-        res.status(201).json(restaurant);
+        const restaurantData = req.body;
+        const newRestaurant = await restaurantService.addRestaurant(restaurantData);
+        res.status(201).json(newRestaurant);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -13,42 +14,51 @@ const addRestaurant = async (req, res) => {
 // Delete a restaurant by ID
 const deleteRestaurant = async (req, res) => {
     try {
-        await restaurantService.deleteRestaurant(req.params.id);
-        res.status(204).end();
+        const { id } = req.params;
+        await restaurantService.deleteRestaurant(id);
+        res.status(204).end(); // No content
     } catch (error) {
         res.status(404).json({ error: error.message });
     }
 };
 
-// View details of a specific restaurant
+// Get details of a specific restaurant
 const getRestaurantDetails = async (req, res) => {
     try {
-        const restaurant = await restaurantService.getRestaurantDetails(req.params.id);
-        if (!restaurant) {
-            return res.status(404).json({ error: 'Restaurant not found' });
-        }
-        res.json(restaurant);
+        const { id } = req.params;
+        const restaurant = await restaurantService.getRestaurantDetails(id);
+        res.status(200).json(restaurant);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(404).json({ error: error.message });
     }
 };
 
 // Update restaurant details
 const updateRestaurantDetails = async (req, res) => {
     try {
-        const updatedRestaurant = await restaurantService.updateRestaurantDetails(req.params.id, req.body);
-        res.json(updatedRestaurant);
+        const { id } = req.params;
+        const updates = req.body;
+        const updatedRestaurant = await restaurantService.updateRestaurantDetails(id, updates);
+        res.status(200).json(updatedRestaurant);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
-// View menu based on filters (location and type)
+// Get filtered menu based on location and type
 const getFilteredMenu = async (req, res) => {
     try {
-        const filters = req.query; // e.g., ?location=Tel%20Aviv&type=Pizza
+        const filters = req.query; // Get filters from query parameters
         const filteredMenu = await restaurantService.getFilteredMenu(filters);
-        res.json(filteredMenu);
+        res.status(200).json(filteredMenu);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+const getAllRestaurantsWithoutMenu = async (req, res) => {
+    try {
+        const restaurants = await restaurantService.getAllRestaurantsWithoutMenu();
+        res.status(200).json(restaurants);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -59,5 +69,6 @@ module.exports = {
     deleteRestaurant,
     getRestaurantDetails,
     updateRestaurantDetails,
-    getFilteredMenu
+    getFilteredMenu,
+    getAllRestaurantsWithoutMenu 
 };

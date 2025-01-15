@@ -5,6 +5,9 @@ const restaurantController = require('../controllers/restaurant');
 // Add a new restaurant
 router.post('/', restaurantController.addRestaurant);
 
+// Route to get all restaurants without menu
+router.get('/all', restaurantController.getAllRestaurantsWithoutMenu);
+
 // Delete a restaurant by ID
 router.delete('/:id', restaurantController.deleteRestaurant);
 

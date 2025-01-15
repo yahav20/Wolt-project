@@ -17,9 +17,9 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/woltTest'
 
 
 // Use Routes
-app.use('/restaurants', restaurantRoutes); // Routes for restaurant operations
-app.use('/categoryItems', categoryItemRoutes); // Routes for category management
-app.use('/items', itemRoutes); // Routes for item management
+app.use('/api/restaurants', restaurantRoutes); // Routes for restaurant operations
+app.use('/api/categoryItems', categoryItemRoutes); // Routes for category management
+app.use('/api/items', itemRoutes); // Routes for item management
 
 // Handle unknown routes
 app.use((req, res, next) => {
