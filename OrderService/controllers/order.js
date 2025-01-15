@@ -1,10 +1,5 @@
-const Order = require("../models/order");
-const orderService = require("../services/order");
-const OrderStatus = require("../models/orderStatus"); // Enum for statuses
-
-// Create a new order
-const { createOrder, updateOrderStatus } = require('../services/orderService');
-
+const Order = require("../model/order");
+const orderService = require("../service/order");
 /**
  * Handles the creation of a new order.
  * Receives order details in the request body, passes them to the service layer,
@@ -20,7 +15,7 @@ async function createOrderHandler(req, res) {
     }
 
     // Call service to create order
-    const order = await createOrder(req.body);
+    const order = await orderService.createOrder(req.body);
 
     // Respond with the created order
     res.status(201).json(order);
@@ -45,7 +40,7 @@ async function updateOrderStatusHandler(req, res) {
     }
 
     // Call service to update the order status
-    const updatedOrder = await updateOrderStatus(id, status);
+    const updatedOrder = await orderService.updateOrderStatus(id, status);
 
     // Respond with the updated order
     res.status(200).json(updatedOrder);

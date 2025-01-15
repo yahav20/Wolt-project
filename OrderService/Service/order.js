@@ -1,6 +1,7 @@
-const Order = require("../models/Order");
-const restaurantService = require("../services/restaurant");
-const userService = require("../services/user");
+const Order = require("../model/order");
+const restaurantService = require("../service/restaurant");
+const userService = require("../service/user");
+const deliveryService = require("../service/delivery");
 
 async function createOrder(data) {
   const { restaurantId, userId, menuItems } = data;
@@ -9,22 +10,26 @@ async function createOrder(data) {
   const restaurant = await restaurantService.getRestaurantById(restaurantId);
   // Fetch user details
   const user = await userService.getUserById(userId);
-
-  if (!restaurant.data || !user.data) {
+  //checking user and restaurant exist
+  if (!restaurant || !user) {
     throw new Error("Invalid restaurant or user data");
   }
   const total = calculateTotal(menuItems);
   // Save order to DB
   const order = new Order({
     userId,
+    userName: user.name ,
     userAddress: user.address,
     restaurantId,
     restaurantName: restaurant.name,
-    menuItems,
-    total,
-    status: "Pending",
+    items:menuItems,
+    total
   });
   await order.save();
+
+  await userService.updateOrderHistory(userId,order);
+  // deliveryService.postOrderToDelivery(order);
+
 
   return order;
 }

@@ -1,11 +1,11 @@
 const axios = require("axios");
 
-const RESTAURANT_SERVICE = "http://localhost:5000/api/restaurants";
+const RESTAURANT_SERVICE = "http://192.168.1.45:3000/api/restaurants";
 
 async function getRestaurantById(id) {
   try {
     const restaurant = await axios.get(`${RESTAURANT_SERVICE}/${id}`);
-    return restaurant;
+    return restaurant.data;
   } catch (error) {
     throw new Error("Failed to get restaurant data");
   }
