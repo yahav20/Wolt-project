@@ -1,5 +1,5 @@
 const Order = require("../model/order");
-const orderService = require("../service/order");
+const orderService = require("../Service/order");
 /**
  * Handles the creation of a new order.
  * Receives order details in the request body, passes them to the service layer,

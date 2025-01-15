@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('custom-env').env(process.env.NODE_ENV,"./config"); // or require('custom-env').env('production');
+const morgan = require('morgan');
+require('custom-env').env("prod","../"); // or require('custom-env').env('production');
 
 // Import Routes
 const restaurantRoutes = require('./routes/restaurant');
@@ -9,7 +10,7 @@ const itemRoutes = require('./routes/item');
 
 const app = express();
 app.use(express.json());
-
+app.use(morgan('combined'));
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/woltTest')
 .then(() => console.log('Connected to MongoDB'))
@@ -33,5 +34,6 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.RESTAURANT_PORT;
+console.log(PORT);
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
