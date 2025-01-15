@@ -6,7 +6,7 @@ const restaurantController = require('../controllers/restaurant');
 router.post('/', restaurantController.addRestaurant);
 
 // Route to get all restaurants without menu
-router.get('/all', restaurantController.getAllRestaurantsWithoutMenu);
+router.get('/', restaurantController.getAllRestaurantsWithoutMenu);
 
 // Delete a restaurant by ID
 router.delete('/:id', restaurantController.deleteRestaurant);
@@ -18,6 +18,7 @@ router.get('/:id', restaurantController.getRestaurantDetails);
 router.put('/:id', restaurantController.updateRestaurantDetails);
 
 // Get menu based on filters (location and type)
-router.get('/menu/filtered', restaurantController.getFilteredMenu);
+router.post('/menu/filtered', restaurantController.getFilteredMenu);
+
 
 module.exports = router;

@@ -1,152 +1,127 @@
 const Restaurant = require('../models/restaurant');
 const CategoryItem = require('../models/categoryItem'); // Ensure the path is correct
 
+// Helper function to format restaurant data consistently
+const formatRestaurant = (restaurant) => ({
+    _id: restaurant._id,
+    name: restaurant.name,
+    type: restaurant.type,
+    address: {
+        street: restaurant.address.street,
+        city: restaurant.address.city,
+        state: restaurant.address.state,
+        zipCode: restaurant.address.zipCode
+    },
+    phone: restaurant.phone,
+    email: restaurant.email || null,
+    website: restaurant.website || null,
+    openingHours: restaurant.openingHours,
+    menu: restaurant.menu || [],
+    createdAt: restaurant.createdAt,
+    updatedAt: restaurant.updatedAt
+});
+
 // Add a new restaurant with menu
 const addRestaurant = async (restaurantData) => {
-    try {
-        // Validate required fields
-        const requiredFields = ['name', 'type', 'address', 'phone', 'openingHours'];
-        requiredFields.forEach((field) => {
-            if (!restaurantData[field]) {
-                throw new Error(`Missing required field: ${field}`);
-            }
-        });
-
-        // Step 1: Create the restaurant without the menu
-        const restaurant = new Restaurant({ ...restaurantData, menu: [] });
-        const savedRestaurant = await restaurant.save();
-
-        // Step 2: Validate and create menu categories
-        let menuIds = [];
-        if (restaurantData.menu && Array.isArray(restaurantData.menu)) {
-            menuIds = await Promise.all(
-                restaurantData.menu.map(async (category) => {
-                    // Add the restaurant ID to each category
-                    const newCategoryItem = new CategoryItem({
-                        ...category,
-                        restaurant: savedRestaurant._id
-                    });
-                    const savedCategory = await newCategoryItem.save();
-                    return savedCategory._id;
-                })
-            );
+    const requiredFields = ['name', 'type', 'address', 'phone', 'openingHours'];
+    requiredFields.forEach((field) => {
+        if (!restaurantData[field]) {
+            throw new Error(`Missing required field: ${field}`);
         }
+    });
 
-        // Step 3: Update the restaurant with the created menu IDs
-        savedRestaurant.menu = menuIds;
-        await savedRestaurant.save();
+    const restaurant = new Restaurant({ ...restaurantData, menu: [] });
+    const savedRestaurant = await restaurant.save();
 
-        return savedRestaurant;
-    } catch (error) {
-        console.error('Error in addRestaurant:', error.message);
-        throw error;
+    let menuIds = [];
+    if (restaurantData.menu && Array.isArray(restaurantData.menu)) {
+        menuIds = await Promise.all(
+            restaurantData.menu.map(async (category) => {
+                const newCategoryItem = new CategoryItem({
+                    ...category,
+                    restaurant: savedRestaurant._id
+                });
+                const savedCategory = await newCategoryItem.save();
+                return savedCategory._id;
+            })
+        );
     }
+
+    savedRestaurant.menu = menuIds;
+    await savedRestaurant.save();
+    return formatRestaurant(savedRestaurant);
 };
 
 // Delete a restaurant by ID
 const deleteRestaurant = async (restaurantId) => {
-    try {
-        if (!restaurantId) {
-            throw new Error('Restaurant ID is required.');
-        }
+    if (!restaurantId) throw new Error('Restaurant ID is required.');
 
-        const restaurant = await Restaurant.findById(restaurantId);
-        if (!restaurant) {
-            throw new Error('Restaurant not found.');
-        }
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) throw new Error('Restaurant not found.');
 
-        if (restaurant.menu && restaurant.menu.length > 0) {
-            await CategoryItem.deleteMany({ _id: { $in: restaurant.menu } });
-        }
-
-        return await Restaurant.findByIdAndDelete(restaurantId);
-    } catch (error) {
-        console.error('Error in deleteRestaurant:', error.message);
-        throw error;
+    if (restaurant.menu && restaurant.menu.length > 0) {
+        await CategoryItem.deleteMany({ _id: { $in: restaurant.menu } });
     }
+
+    return await Restaurant.findByIdAndDelete(restaurantId);
 };
 
 // View details of a specific restaurant
 const getRestaurantDetails = async (restaurantId) => {
-    try {
-        if (!restaurantId) {
-            throw new Error('Restaurant ID is required.');
-        }
+    if (!restaurantId) throw new Error('Restaurant ID is required.');
 
-        const restaurant = await Restaurant.findById(restaurantId).populate('menu');
-        if (!restaurant) {
-            throw new Error('Restaurant not found.');
-        }
+    const restaurant = await Restaurant.findById(restaurantId).populate('menu');
+    if (!restaurant) throw new Error('Restaurant not found.');
 
-        return restaurant;
-    } catch (error) {
-        console.error('Error in getRestaurantDetails:', error.message);
-        throw error;
-    }
+    return formatRestaurant(restaurant);
 };
 
 // Update restaurant details
 const updateRestaurantDetails = async (restaurantId, updates) => {
-    try {
-        if (!restaurantId) {
-            throw new Error('Restaurant ID is required.');
-        }
+    if (!restaurantId) throw new Error('Restaurant ID is required.');
 
-        if (updates.type && !['Italian', 'Pizza', 'Fast Food', 'Chinese', 'Indian', 'Dessert', 'Cafe'].includes(updates.type)) {
-            throw new Error('Invalid restaurant type.');
-        }
-
-        const updatedRestaurant = await Restaurant.findByIdAndUpdate(restaurantId, updates, { new: true });
-        if (!updatedRestaurant) {
-            throw new Error('Restaurant not found.');
-        }
-
-        return updatedRestaurant;
-    } catch (error) {
-        console.error('Error in updateRestaurantDetails:', error.message);
-        throw error;
+    if (
+        updates.type &&
+        !['Italian', 'Pizza', 'Fast Food', 'Chinese', 'Indian', 'Dessert', 'Cafe'].includes(updates.type)
+    ) {
+        throw new Error('Invalid restaurant type.');
     }
+
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(restaurantId, updates, {
+        new: true
+    });
+    if (!updatedRestaurant) throw new Error('Restaurant not found.');
+
+    return formatRestaurant(updatedRestaurant);
 };
 
-// View menu based on filters
+// View menu based on filters (location and type)
 const getFilteredMenu = async (filters) => {
-    try {
-        const { location, type } = filters;
-        if (!location && !type) {
-            throw new Error('At least one filter (location or type) is required.');
-        }
+    const { location, type } = filters;
 
-        const query = {};
-        if (location) query['address.city'] = location;
-        if (type) query['type'] = type;
+    if (!location && !type) throw new Error('At least one filter (location or type) is required.');
 
-        const restaurants = await Restaurant.find(query).populate({
-            path: 'menu',
-            populate: { path: 'items' }
-        });
+    const query = {};
+    if (location) query['address.city'] = location;
+    if (type) query['type'] = type;
 
-        if (!restaurants || restaurants.length === 0) {
-            throw new Error('No restaurants found matching the provided filters.');
-        }
+    const restaurants = await Restaurant.find(query).populate({
+        path: 'menu',
+        populate: { path: 'items' }
+    });
 
-        return restaurants.map((restaurant) => ({
-            restaurant: restaurant.name,
-            menu: restaurant.menu
-        }));
-    } catch (error) {
-        console.error('Error in getFilteredMenu:', error.message);
-        throw error;
-    }
+    if (!restaurants || restaurants.length === 0) throw new Error('No restaurants found matching the provided filters.');
+
+    return restaurants.map((restaurant) => ({
+        restaurant: restaurant.name,
+        menu: restaurant.menu
+    }));
 };
+
+// Get all restaurants without menu
 const getAllRestaurantsWithoutMenu = async () => {
-    try {
-        // Fetch all restaurants and exclude the "menu" field
-        const restaurants = await Restaurant.find({}, '-menu');
-        return restaurants;
-    } catch (error) {
-        console.error('Error in getAllRestaurantsWithoutMenu:', error.message);
-        throw error;
-    }
+    const restaurants = await Restaurant.find({}, '-menu');
+    return restaurants.map(formatRestaurant);
 };
 
 module.exports = {

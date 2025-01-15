@@ -10,15 +10,18 @@ const addItemToCategory = async (req, res) => {
     }
 };
 
-// Delete an item from a specific category
 const deleteItemFromCategory = async (req, res) => {
     try {
-        const updatedCategory = await itemService.deleteItemFromCategory(req.params.categoryId, req.params.itemId);
+        const { categoryId } = req.params; // Extract categoryId from the URL
+        const { itemName } = req.body; // Extract itemName from the request body
+
+        const updatedCategory = await itemService.deleteItemFromCategory(categoryId, itemName);
         res.json(updatedCategory);
     } catch (error) {
         res.status(404).json({ error: error.message });
     }
 };
+
 
 // Get all items in a specific category
 const getItemsInCategory = async (req, res) => {
@@ -30,19 +33,23 @@ const getItemsInCategory = async (req, res) => {
     }
 };
 
-// Get a specific item by its ID in a category
-const getItemById = async (req, res) => {
+// Get a specific item by its name in a category
+const getItemByName = async (req, res) => {
     try {
-        const item = await itemService.getItemById(req.params.categoryId, req.params.itemId);
+        const { categoryId } = req.params; // Extract categoryId from the URL
+        const { itemName } = req.body; // Extract itemName from the request body
+
+        const item = await itemService.getItemByName(categoryId, itemName);
         res.json(item);
     } catch (error) {
         res.status(404).json({ error: error.message });
     }
 };
 
+
 module.exports = {
     addItemToCategory,
     deleteItemFromCategory,
     getItemsInCategory,
-    getItemById
+    getItemByName
 };

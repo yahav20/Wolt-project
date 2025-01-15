@@ -42,23 +42,24 @@ const addItemToCategory = async (categoryId, itemData) => {
     return await category.save();
 };
 
-// Delete an item from a specific category
-const deleteItemFromCategory = async (categoryId, itemId) => {
-    // Validate categoryId and itemId
+// Delete an item from a specific category using index or unique property
+const deleteItemFromCategory = async (categoryId, itemName) => {
+    // Validate categoryId and itemName
     if (!categoryId) throw new Error('Category ID is required');
-    if (!itemId) throw new Error('Item ID is required');
+    if (!itemName) throw new Error('Item name is required');
 
     const category = await CategoryItem.findById(categoryId);
     if (!category) throw new Error('Category not found');
 
     // Check if the item exists in the category
-    const itemExists = category.items.some((item) => item._id.toString() === itemId);
+    const itemExists = category.items.some((item) => item.name === itemName);
     if (!itemExists) throw new Error('Item not found in the category');
 
     // Remove the item
-    category.items = category.items.filter((item) => item._id.toString() !== itemId);
+    category.items = category.items.filter((item) => item.name !== itemName);
     return await category.save();
 };
+
 
 // Get all items in a specific category
 const getItemsInCategory = async (categoryId) => {
@@ -71,24 +72,25 @@ const getItemsInCategory = async (categoryId) => {
     return category.items;
 };
 
-// Get a specific item by its ID in a specific category
-const getItemById = async (categoryId, itemId) => {
-    // Validate categoryId and itemId
+// Get a specific item by its name in a specific category
+const getItemByName = async (categoryId, itemName) => {
+    // Validate categoryId and itemName
     if (!categoryId) throw new Error('Category ID is required');
-    if (!itemId) throw new Error('Item ID is required');
+    if (!itemName) throw new Error('Item name is required');
 
     const category = await CategoryItem.findById(categoryId);
     if (!category) throw new Error('Category not found');
 
-    const item = category.items.find((item) => item._id.toString() === itemId);
+    const item = category.items.find((item) => item.name === itemName);
     if (!item) throw new Error('Item not found in the category');
 
     return item;
 };
 
+
 module.exports = {
     addItemToCategory,
     deleteItemFromCategory,
     getItemsInCategory,
-    getItemById
+    getItemByName
 };
