@@ -38,7 +38,11 @@ const addCategoryToMenu = async (restaurantId, categoryData) => {
     }
 
     // Create and save the category
-    const category = new CategoryItem(categoryData);
+    const category = new CategoryItem({
+        ...categoryData,
+        restaurant: restaurantId // Associate category with the restaurant
+    });
+
     const savedCategory = await category.save();
 
     // Find the restaurant and add the category to its menu
@@ -81,7 +85,11 @@ const getCategoriesForRestaurant = async (restaurantId) => {
     // Validate restaurantId
     if (!restaurantId) throw new Error('Restaurant ID is required');
 
-    const restaurant = await Restaurant.findById(restaurantId).populate('menu');
+    const restaurant = await Restaurant.findById(restaurantId).populate({
+        path: 'menu',
+        model: 'CategoryItem'
+    });
+
     if (!restaurant) throw new Error('Restaurant not found');
 
     return restaurant.menu;
