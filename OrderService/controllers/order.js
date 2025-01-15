@@ -1,7 +1,5 @@
-const Order = require("../models/order");
-const orderService = require("../services/order");
-const OrderStatus = require("../models/orderStatus"); // Enum for statuses
-
+const Order = require("../model/order");
+const orderService = require("../service/order");
 
 /**
  * Handles the creation of a new order.

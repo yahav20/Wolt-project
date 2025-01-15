@@ -1,6 +1,6 @@
-const Order = require("../models/Order");
-const restaurantService = require("../services/restaurant");
-const userService = require("../services/user");
+const Order = require("../model/order");
+const restaurantService = require("../service/restaurant");
+const userService = require("../service/user");
 
 async function createOrder(data) {
   const { restaurantId, userId, menuItems } = data;
