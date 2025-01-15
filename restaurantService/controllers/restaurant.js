@@ -1,14 +1,33 @@
 const restaurantService = require('../services/restaurant');
 
-// Add a new restaurant
 const addRestaurant = async (req, res) => {
     try {
-        const restaurant = await restaurantService.addRestaurant(req.body);
+        const { menu, ...restaurantData } = req.body; // Extract menu from the request body
+
+        let menuIds = [];
+        if (menu && Array.isArray(menu)) {
+            // Create CategoryItem documents for the provided menu
+            menuIds = await Promise.all(
+                menu.map(async (category) => {
+                    const categoryItem = new CategoryItem(category); // Create a new CategoryItem
+                    await categoryItem.save(); // Save it to the database
+                    return categoryItem._id; // Return its ID
+                })
+            );
+        }
+
+        // Add the restaurant with the created menu IDs
+        const restaurant = await restaurantService.addRestaurant({
+            ...restaurantData,
+            menu: menuIds
+        });
+
         res.status(201).json(restaurant);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
+
 
 // Delete a restaurant by ID
 const deleteRestaurant = async (req, res) => {
