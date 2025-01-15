@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // Enum for order statuses
 const OrderStatus = {
-  PENDING: "Pending",
+  RECEIVED: "Received",
   COOKING: "Cooking",
   READY_FOR_PICKUP: "Ready for Pickup",
   OUT_FOR_DELIVERY: "Out for Delivery",
@@ -15,6 +15,10 @@ const Order = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
+  },
+  userName: {
+    type: String,
     required: true,
   },
   userAddress: {
@@ -44,9 +48,9 @@ const Order = new Schema({
   status: {
     type: String,
     enum: Object.values(OrderStatus),
-    default: OrderStatus.PENDING
+    default: OrderStatus.RECEIVED
   },
-  createdAt: {
+  orderDate: {
     type: Date,
     default: Date.now,
   },

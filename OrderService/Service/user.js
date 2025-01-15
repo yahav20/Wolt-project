@@ -1,19 +1,20 @@
 const axios = require("axios");
 
-const USER_SERVICE = "http://localhost:5000/api/users";
+const USER_SERVICE = "http://192.168.1.71:3000/users";
 
 async function getUserById(id) {
   try {
     const user = await axios.get(`${USER_SERVICE}/${id}`);
-    return user;
+    return user.data;
   } catch (error) {
+    console.error(error);
     throw new Error("Failed to get user data");
   }
 }
 
 async function updateOrderHistory(id, order) {
   try {
-    await axios.post(`${USER_SERVICE}/${id}/orders`, order);
+    await axios.patch(`${USER_SERVICE}/${id}`, {"order":order.id});
   } catch (error) {
     throw new Error("Failed to update user order history");
   }
