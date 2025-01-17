@@ -1,8 +1,9 @@
 const express = require("express");
+require('custom-env').env("prod",'../');
+
 const bodyParser = require("body-parser");
 const orderRoute = require("./routes/order");
 const mongoose = require("mongoose");
-require('custom-env').env("prod",'../');
 // Initialize Express app
 const app = express();
 app.use(bodyParser.json());

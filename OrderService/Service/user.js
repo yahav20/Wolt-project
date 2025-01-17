@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const USER_SERVICE = "http://192.168.1.71:3000/users";
-
+const USER_SERVICE = process.env.USERS_SERVICE + "/users";
+console.log(USER_SERVICE)
 async function getUserById(id) {
   try {
     const user = await axios.get(`${USER_SERVICE}/${id}`);
