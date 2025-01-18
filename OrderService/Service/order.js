@@ -5,7 +5,6 @@ const deliveryService = require("../api/delivery");
 
 async function createOrder(data) {
   const { restaurantId, userId, menuItems } = data;
-
   // Fetch restaurant and user details
   const restaurant = await restaurantService.getRestaurantById(restaurantId);
   // Fetch user details
@@ -29,7 +28,7 @@ async function createOrder(data) {
 
   await userService.updateOrderHistory(userId, order);
 
-  // deliveryService.postOrderToDelivery(order);
+  await deliveryService.postOrderToDelivery(order);
 
   return order;
 }
@@ -39,12 +38,12 @@ const calculateTotal = (items) => {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 };
 
-async function updateOrderStatus(orderId, status) {
+async function updateOrderStatus(orderId) {
   const order = await Order.findById(orderId);
   if (!order) {
     throw new Error("Order not found");
   }
-  order.status = status;
+  order.nextStatus();
   await order.save();
   return order;
 }

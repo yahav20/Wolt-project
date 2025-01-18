@@ -56,4 +56,27 @@ const Order = new Schema({
   },
 });
 
+// Changing status method
+OrderSchema.methods.nextStatus = function () {
+  switch (this.status) {
+    case OrderStatus.RECEIVED:
+      this.status = OrderStatus.COOKING;
+      break;
+    case OrderStatus.COOKING:
+      this.status = OrderStatus.READY_FOR_PICKUP;
+      break;
+    case OrderStatus.READY_FOR_PICKUP:
+      this.status = OrderStatus.OUT_FOR_DELIVERY;
+      break;
+    case OrderStatus.OUT_FOR_DELIVERY:
+      this.status = OrderStatus.COMPLETED;
+      break;
+    case OrderStatus.COMPLETED:
+      throw new Error("Order is already completed. No further status changes allowed.");
+    default:
+      throw new Error("Invalid status transition.");
+  }
+};
+
+
 module.exports = mongoose.model("Order", Order);
