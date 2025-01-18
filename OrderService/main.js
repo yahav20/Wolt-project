@@ -1,12 +1,12 @@
 const express = require("express");
+require('custom-env').env("prod",'../');
+
 const bodyParser = require("body-parser");
 const orderRoute = require("./routes/order");
 const mongoose = require("mongoose");
-
 // Initialize Express app
 const app = express();
 app.use(bodyParser.json());
-
 // MongoDB connection setup
 mongoose
   .connect("mongodb://localhost:27017/orders", {
@@ -23,7 +23,7 @@ mongoose
 app.use("/api/orders", orderRoute);
 
 // Start the server
-const PORT = 4000;
+const PORT = process.env.ORDERS_PORT;
 app.listen(PORT, () => {
   console.log(`Order Service running on port ${PORT}`);
 });

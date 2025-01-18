@@ -8,7 +8,7 @@ async function postOrderToDelivery(order) {
     const response = await axios.post(`${DELIVERY_SERVICE}`, order);
     return response.data; // Return only the data field of the response
   } catch (error) {
-    throw new Error("Failed to post data");
+    throw new Error("Failed to post order");
   }
 }
 

@@ -27,6 +27,7 @@ const updateHistory = async (id, order) => {
 
 const authenticateUser = async (mail, password) => {
     const user = await User.findOne({ mail });
+    console.log(user, mail);
     if (!user) return null;
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

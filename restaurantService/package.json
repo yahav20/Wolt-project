@@ -1,7 +1,7 @@
 {
-  "name": "orderservice",
+  "name": "resturantservice",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,10 +10,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "axios": "^1.7.9",
-    "body-parser": "^1.20.3",
     "custom-env": "^2.0.6",
     "express": "^4.21.2",
-    "mongoose": "^8.9.5"
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0"
   }
 }

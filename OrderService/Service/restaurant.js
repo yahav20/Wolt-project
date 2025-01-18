@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const RESTAURANT_SERVICE = "http://192.168.1.45:3000/api/restaurants";
-
+const RESTAURANT_SERVICE = process.env.RESTAURANT_SERVICE + "/api/restaurants";
+console.log(RESTAURANT_SERVICE)
 async function getRestaurantById(id) {
   try {
     const restaurant = await axios.get(`${RESTAURANT_SERVICE}/${id}`);
