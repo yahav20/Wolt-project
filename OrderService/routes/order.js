@@ -7,9 +7,10 @@ const router = express.Router();
 router.post("/", OrderController.createOrderHandler);
 // Update order status
 router.patch("/:id/status", OrderController.updateOrderStatusHandler);
+// get order status
+router.get("/:id/status", OrderController.getOrderStatus);
 // Get all orders
 router.get("/", OrderController.getAllOrders);
-
 // Get a specific order by ID
 router.get("/:id", OrderController.getOrderById);
 
