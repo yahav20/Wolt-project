@@ -1,14 +1,14 @@
 const Order = require("../model/order");
-const restaurantService = require("../api/restaurant");
-const userService = require("../api/user");
+const restaurantApi = require("../api/restaurant");
+const userApi = require("../api/user");
 const deliveryService = require("../api/delivery");
 
 async function createOrder(data) {
   const { restaurantId, userId, menuItems } = data;
   // Fetch restaurant and user details
-  const restaurant = await restaurantService.getRestaurantById(restaurantId);
+  const restaurant = await restaurantApi.getRestaurantById(restaurantId);
   // Fetch user details
-  const user = await userService.getUserById(userId);
+  const user = await userApi.getUserById(userId);
   //checking user and restaurant exist
   if (!restaurant || !user) {
     throw new Error("Invalid restaurant or user data");
@@ -26,7 +26,7 @@ async function createOrder(data) {
   });
   await order.save();
 
-  await userService.updateOrderHistory(userId, order);
+  await userApi.updateOrderHistory(userId, order);
 
   await deliveryService.postOrderToDelivery(order);
 

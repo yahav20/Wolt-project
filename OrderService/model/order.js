@@ -57,7 +57,7 @@ const Order = new Schema({
 });
 
 // Changing status method
-OrderSchema.methods.nextStatus = function () {
+Order.methods.nextStatus = function () {
   switch (this.status) {
     case OrderStatus.RECEIVED:
       this.status = OrderStatus.COOKING;
