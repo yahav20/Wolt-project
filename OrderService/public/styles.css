@@ -103,18 +103,18 @@ h2 {
 .menu-items-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; 
+  justify-content: flex-start; 
   gap: 10px;
 }
 
 .menu-item {
-  background-color: #f9f9f9; /* Light background for items */
-  border-radius: 12px; /* Rounded corners */
-  border: 1px solid #e0e0e0; /* Subtle border for better separation */
-  padding: 5px;
-  width: calc(30% - 10px); /* Adjust width for 3 items per row with space */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #ffffff, #f0f4ff); /* Subtle gradient for depth */
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: calc(25% - 15px); /* Fit 4 items in a row with reduced gaps */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease
 }
 
 .menu-item:hover {
