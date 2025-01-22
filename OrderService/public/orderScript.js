@@ -1,3 +1,6 @@
+import { getUserById, updateOrderHistory } from "./api/user.js";
+import { getRestaurantById } from "./api/restaurant.js";
+
 const menuContainer = document.getElementById("menuContainer");
 const userInfoDiv = document.getElementById("userName");
 const restaurantInfoDiv = document.getElementById("restaurantName");
