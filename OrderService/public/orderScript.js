@@ -37,7 +37,7 @@ const api = {
       menu: [
         {
           _id: "605c72efc7e2d4d1b58fbdf3",
-          name: "Pasta Dishes",
+          name: "Foo Pasta Dishes",
           items: [
             {
               name: "Spaghetti Carbonara",
