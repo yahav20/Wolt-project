@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const morgan = require('morgan');
-require('custom-env').env("prod","../"); // or require('custom-env').env('production');
+require('custom-env').env(process.env.NODE_ENV,"./config"); // or require('custom-env').env('production');
 
 // Import Routes
 const restaurantRoutes = require('./routes/restaurant');
@@ -18,6 +17,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/woltTest'
 
 
 // Use Routes
+app.use(cors());
 app.use('/api/restaurants', restaurantRoutes); // Routes for restaurant operations
 app.use('/api/categoryItems', categoryItemRoutes); // Routes for category management
 app.use('/api/item', itemRoutes); // Routes for item management
