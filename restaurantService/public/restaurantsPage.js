@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   async function fetchRestaurants() {
     try {
-      const response = await fetch("http://localhost:3000/api/restaurants/all");
+      const response = await fetch("http://localhost:3000/api/restaurants/");
       console.log("Response status:", response.status);
       if (!response.ok) {
         throw new Error(`Failed to fetch restaurants: ${response.statusText}`);

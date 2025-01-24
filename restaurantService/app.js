@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('custom-env').env(process.env.NODE_ENV,"./config"); // or require('custom-env').env('production');
-
+const morgan = require('morgan'); // Import morgan
+require('custom-env').env(process.env.NODE_ENV, './config');
+const cors = require('cors');
 // Import Routes
 const restaurantRoutes = require('./routes/restaurant');
 const categoryItemRoutes = require('./routes/categoryItem');
@@ -9,12 +10,12 @@ const itemRoutes = require('./routes/item');
 
 const app = express();
 app.use(express.json());
-app.use(morgan('combined'));
+app.use(morgan('combined')); // Use morgan for logging
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/woltTest')
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Could not connect to MongoDB', err));
-
+mongoose
+  .connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/woltTest')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Could not connect to MongoDB', err));
 
 // Use Routes
 app.use(cors());
@@ -34,6 +35,5 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const PORT = process.env.RESTAURANT_PORT;
-console.log(PORT);
+const PORT = process.env.RESTAURANT_PORT || 3000; // Default to 3000 if not set
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
