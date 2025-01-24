@@ -8,6 +8,7 @@ const createUser = async (name, mail, password, address) => {
 };
 
 const getUserById = async (id) => {
+    console.log(id);
     return await User.findById(id);
 };
 
@@ -27,12 +28,9 @@ const updateHistory = async (id, order) => {
 
 const authenticateUser = async (mail, password) => {
     const user = await User.findOne({ mail });
-    console.log(user, mail);
     if (!user) return null;
-
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) return null;
-
     return user;
 };
 

@@ -13,10 +13,11 @@ router.post('/', async (req, res) => {
     const { email, password } = req.body;
     try {
       const user = await userService.authenticateUser(email, password);
+      console.log(user, '1');
       if (!user) {
         return res.status(401).json({ success: false, message: 'Invalid credentials' });
       }
-  
+      console.log(user, '2');
       // Create JWT
       const token = jwt.sign(
         { userId: user._id, email: user.email, name: user.name },

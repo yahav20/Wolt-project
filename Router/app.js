@@ -13,3 +13,8 @@ app.use('/api', apiRoutes);
 app.listen(PORT, () => {
   console.log(`API Gateway listening on port ${PORT}`);
 });
+
+const path = require('path');
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));

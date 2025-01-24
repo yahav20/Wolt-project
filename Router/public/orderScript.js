@@ -1,129 +1,69 @@
-
+// Get references to DOM elements
 const menuContainer = document.getElementById("menuContainer");
 const userInfoDiv = document.getElementById("userName");
 const restaurantInfoDiv = document.getElementById("restaurantName");
 const submitOrderButton = document.getElementById("submitOrder");
 const totalDisplay = document.getElementById("total-price");
 
+// Hardcoded user ID for demonstration purposes
+const userId = "67934e448e55f6dbbbcf089c";
+const params = new URLSearchParams(window.location.search);
+const restaurantId = params.get("restaurantId");
+
+// API object containing methods to fetch user and restaurant data
+// API object containing methods to fetch user and restaurant data
 const api = {
   async getUserById(userId) {
-    return {
-      name: "ido",
-      mail: "idoHagever@gmail.com",
-      address: "ido's house",
-    };
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    const response = await fetch(`/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    return await response.json();
   },
+
   async getRestaurantById(restaurantId) {
-    return {
-      name: "Bella Italia",
-      type: "Italian",
-      address: {
-        street: "123 Pasta St.",
-        city: "Rome",
-        state: "Lazio",
-        zipCode: "00100",
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    const response = await fetch(`/api/restaurants/${restaurantId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
       },
-      phone: "+39 06 1234567",
-      email: "contact@bellaitalia.com",
-      website: "https://www.bellaitalia.com",
-      openingHours: {
-        monday: { open: "10:00", close: "22:00" },
-        tuesday: { open: "10:00", close: "22:00" },
-        wednesday: { open: "10:00", close: "22:00" },
-        thursday: { open: "10:00", close: "22:00" },
-        friday: { open: "10:00", close: "23:00" },
-        saturday: { open: "10:00", close: "23:00" },
-        sunday: { open: "10:00", close: "22:00" },
-      },
-      menu: [
-        {
-          _id: "605c72efc7e2d4d1b58fbdf3",
-          name: "Foo Pasta Dishes",
-          items: [
-            {
-              name: "Spaghetti Carbonara",
-              description: "Classic Italian pasta with eggs, cheese, pancetta, and pepper.",
-              price: 12.5,
-              imageUrl: "https://example.com/spaghetti-carbonara.jpg",
-              availability: true,
-              _id:"1"
-            },
-            {
-              name: "Fettuccine Alfredo",
-              description: "Creamy fettuccine pasta with butter and parmesan.",
-              price: 13.0,
-              imageUrl: "https://example.com/fettuccine-alfredo.jpg",
-              availability: true,
-              _id:"2"
-            },
-          ],
-          restaurant: "605c72efc7e2d4d1b58fbd1a",
-        },
-        {
-          _id: "605c72efc7e2d4d1b58fbdf4",
-          name: "Pizzas",
-          items: [
-            {
-              name: "Margherita Pizza",
-              description: "Classic pizza with tomato, mozzarella, and basil.",
-              price: 10.0,
-              imageUrl: "https://example.com/margherita-pizza.jpg",
-              availability: true,
-              _id:"3"
-            },
-            {
-              name: "Pepperoni Pizza",
-              description: "Pizza topped with spicy pepperoni and cheese.",
-              price: 12.0,
-              imageUrl: "https://example.com/pepperoni-pizza.jpg",
-              availability: true,
-              _id:"4"
-            },
-          ],
-          restaurant: "605c72efc7e2d4d1b58fbd1a",
-        },
-        {
-          _id: "605c72efc7e2d4d1b58fbdf5",
-          name: "Desserts",
-          items: [
-            {
-              name: "Tiramisu",
-              description: "A classic Italian dessert made with coffee-soaked ladyfingers and mascarpone.",
-              price: 6.5,
-              imageUrl: "https://example.com/tiramisu.jpg",
-              availability: true,
-              _id:"5"
-            },
-            {
-              name: "Gelato",
-              description: "Italian ice cream available in various flavors.",
-              price: 5.0,
-              imageUrl: "https://example.com/gelato.jpg",
-              availability: true,
-              _id:"6"
-            },
-          ],
-          restaurant: "605c72efc7e2d4d1b58fbd1a",
-        },
-      ],
-    };
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch restaurant data");
+    }
+
+    return await response.json();
   },
 };
-
+// Function to fetch user and restaurant data and update the UI
 async function fetchData() {
   try {
     const [userResponse, restaurantResponse] = await Promise.all([
-      api.getUserById("123"),
-      api.getRestaurantById("145"),
+      api.getUserById(userId),
+      api.getRestaurantById(restaurantId),
     ]);
 
     if (!userResponse || !restaurantResponse) {
       throw new Error("Failed to fetch user or restaurant data");
     }
 
+    // Update UI with fetched data
     userInfoDiv.textContent = userResponse.name;
     restaurantInfoDiv.textContent = restaurantResponse.name;
 
+    // Render the restaurant menu
     renderMenu(restaurantResponse.menu);
   } catch (error) {
     console.error("Error fetching data:", error.message);
@@ -134,6 +74,7 @@ async function fetchData() {
   }
 }
 
+// Function to render the restaurant menu
 function renderMenu(menuCategories) {
   menuContainer.innerHTML = "";
   menuCategories.forEach((category) => {
@@ -148,16 +89,16 @@ function renderMenu(menuCategories) {
     category.items.forEach((item) => {
       const menuItemDiv = document.createElement("div");
       menuItemDiv.className = "menu-item";
-      menuItemDiv.dataset.itemId = item._id;
+      menuItemDiv.dataset.itemId = item.name;
 
       menuItemDiv.innerHTML = `
         <h3>${item.name}</h3>
         <p>${item.description}</p>
         <p>Price: $${item.price.toFixed(2)}</p>
         <div class="quantity-control">
-          <button class="quantity-decrease" data-id="${item._id}">-</button>
-          <span class="quantity-display" id="quantity-${item._id}">0</span>
-          <button class="quantity-increase" data-id="${item._id}">+</button>
+          <button class="quantity-decrease" data-id="${item.name}">-</button>
+          <span class="quantity-display" id="quantity-${item.name}">0</span>
+          <button class="quantity-increase" data-id="${item.name}">+</button>
         </div>`;
 
       itemsContainer.appendChild(menuItemDiv);
@@ -174,9 +115,11 @@ function renderMenu(menuCategories) {
     btn.addEventListener("click", (e) => updateQuantity(e.target, 1))
   );
 
+  // Update the total price display
   updateTotal();
 }
 
+// Function to update the quantity of a menu item
 function updateQuantity(button, change) {
   const itemId = button.dataset.id;
   const quantityDisplay = document.getElementById(`quantity-${itemId}`);
@@ -184,9 +127,11 @@ function updateQuantity(button, change) {
   quantity = Math.max(0, quantity + change);  // Ensure quantity doesn't go below 0
   quantityDisplay.textContent = quantity;
 
+  // Update the total price display
   updateTotal();
 }
 
+// Function to update the total price display
 function updateTotal() {
   let total = 0;
   // Loop through each menu item and calculate the total
@@ -201,6 +146,7 @@ function updateTotal() {
   totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
 }
 
+// Event listener for the submit order button
 submitOrderButton.addEventListener("click", async () => {
   const selectedItems = Array.from(document.querySelectorAll(".menu-item")).map((itemDiv) => {
     const itemId = itemDiv.dataset.itemId;
@@ -216,10 +162,10 @@ submitOrderButton.addEventListener("click", async () => {
   }).filter(item => item !== null);
 
   const total = selectedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
+  //create order object
   const order = {
-    userId: "123",
-    restaurantId: "145",
+    userId: userId,
+    restaurantId: restaurantId,
     menuItems: selectedItems,
     totalPrice: total,
   };
@@ -240,4 +186,5 @@ submitOrderButton.addEventListener("click", async () => {
   }
 });
 
+// Fetch data when the script is loaded
 fetchData();

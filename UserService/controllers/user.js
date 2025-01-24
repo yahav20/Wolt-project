@@ -9,7 +9,19 @@ const getUsers = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
+    console.log();
     const user = await userService.getUserById(req.params.id);
+    if(!user){
+        return res.status(404).json({errors : ['Article not found']});
+    }
+    res.json(user);
+}
+
+const getUserByToken = async (req, res) => {
+    console.log("here");
+    console.log(req.headers);
+    console.log(req.headers['x-user-id']);
+    const user = await userService.getUserById(req.headers['x-user-id']);
     if(!user){
         return res.status(404).json({errors : ['Article not found']});
     }
@@ -26,4 +38,4 @@ const login = (req, res) => {
 }
 
 
-module.exports = {createUser, getUsers, getUser, updateHistory, login};
+module.exports = {createUser, getUsers, getUser, updateHistory, login, getUserByToken};

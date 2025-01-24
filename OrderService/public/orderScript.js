@@ -13,20 +13,40 @@ const restaurantId = params.get("restaurantId");
 // API object containing methods to fetch user and restaurant data
 const api = {
   async getUserById(userId) {
-    const response = await fetch(`/api/user/${userId}`);
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    const response = await fetch(`/api/user/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
+
     if (!response.ok) {
       throw new Error("Failed to fetch user data");
     }
+
     return await response.json();
   },
+
   async getRestaurantById(restaurantId) {
-    const response = await fetch(`/api/restaurant/${restaurantId}`);
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    const response = await fetch(`/api/restaurant/${restaurantId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
+
     if (!response.ok) {
       throw new Error("Failed to fetch restaurant data");
     }
+
     return await response.json();
-  }
+  },
 };
+
 
 // Function to fetch user and restaurant data and update the UI
 async function fetchData() {

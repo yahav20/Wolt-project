@@ -8,14 +8,14 @@ const dashboard = require('./routes/dashboard');
 const signup = require('./routes/signup');
 const signout = require('./routes/signout')
 const session = require('express-session');
-
+const morgan = require('morgan');
 console.log(process.env.NODE_ENV);
 require('custom-env').env("prod",'../');
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mydatabase';
 
 mongoose.connect(MONGO_URI)
 var app = express();
-
+app.use(morgan('default'));
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.json());
