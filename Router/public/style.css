@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb; /* Light background */
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  header h1 {
+    font-size: 2.5em;
+    color: #0073e6; /* Wolt-like blue */
+  }
+  
+  .restaurant-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .restaurant-card {
+    background-color: #fff; /* White card background */
+    border: 1px solid #e6e6e6;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px; /* Consistent width */
+    height: 320px; /* Consistent height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .restaurant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .restaurant-card h2 {
+    font-size: 1.5em;
+    color: #0073e6;
+    margin-bottom: 10px;
+  }
+  
+  .restaurant-card p {
+    font-size: 0.95em;
+    color: #555;
+    margin: 5px 0;
+  }
+  
+  .restaurant-card a {
+    text-decoration: none;
+    color: #0073e6;
+    font-weight: bold;
+  }
+  
+  .restaurant-card a:hover {
+    text-decoration: underline;
+  }
+  
+  .restaurant-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .order-button {
+    background-color: #0073e6; /* Wolt-like blue */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px; /* Rounded corners */
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .order-button:hover {
+    background-color: #005bb5; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarges on hover */
+  }
+  
+  .order-button:active {
+    background-color: #004a94; /* Even darker blue when clicked */
+    transform: scale(0.95); /* Slightly shrinks on click */
+  }
+  

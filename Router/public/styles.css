@@ -1,0 +1,218 @@
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background: #e8f4f8; /* Updated background color for the page */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+
+.container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  color: #3e4c59;
+  font-size: 2.5em;
+}
+
+/* User and restaurant info styling */
+#userInfo, #restaurantInfo {
+  font-size: 1.8em;
+  text-align: center;
+  color: #010101;
+  background: linear-gradient(135deg, #4facfe, #00f2fe); /* Vibrant gradient */
+  padding: 20px 15px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px; /* Better readability */
+  font-weight: 500;
+}
+
+/* Highlighted text for user and restaurant names */
+#userInfo strong, #restaurantInfo strong {
+  color: #000000; /* Warm golden highlight */
+  font-weight: 700;
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.6); /* Subtle glow */
+}
+
+/* Additional hover effect for subtle interactivity */
+#userInfo:hover, #restaurantInfo:hover {
+  transform: scale(1.02); /* Slight zoom-in effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Center-align and separate content slightly */
+#userInfo span, #restaurantInfo span {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+/* Adjust spacing between sections */
+#userInfo {
+  margin-top: 20px; /* Adds separation from the header */
+}
+
+
+h2 {
+  text-align: center;
+  font-size: 1.8em;
+  color: #2d4059;
+  margin-bottom: 20px;
+}
+
+/* Updated menu layout */
+.menu-container {
+  display: flex;
+  flex-direction: column; /* Categories now stack vertically */
+  gap: 15px; /* Add space between categories */
+}
+
+/* Category title */
+.menu-category {
+  font-size: 1.8rem;
+  color: #2d4059;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+/* Menu items */
+.menu-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; 
+  gap: 10px;
+}
+
+.menu-item {
+  background: linear-gradient(135deg, #ffffff, #f0f4ff); /* Subtle gradient for depth */
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: calc(25% - 15px); /* Fit 4 items in a row with reduced gaps */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease
+}
+
+.menu-item:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+.menu-item h3 {
+  color: #34495e; /* Darker text for item names */
+  font-size: 1.4em; /* Slightly larger font */
+  margin-bottom: 8px;
+}
+
+.menu-item p {
+  color: #7f8c8d; /* Muted gray for descriptions */
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.menu-item .quantity-control {
+  display: flex;
+  justify-content: center; /* Center the quantity controls */
+  align-items: center;
+  gap: 5px; /* Space between buttons and display */
+}
+
+.menu-item .quantity-control button {
+  background: #3498db; /* Blue for buttons */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item .quantity-control button:hover {
+  background: #2980b9; /* Darker blue on hover */
+}
+
+.menu-item .quantity-display {
+  background-color: #ecf0f1; /* Light gray for the quantity display */
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .menu-item {
+    width: calc(45% - 10px); 
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-item {
+    width: 100%; 
+  }
+}
+
+/* Total section */
+#total-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#total-price {
+  font-size: 1.5rem;
+  color: #28a745;
+  font-weight: bold;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  margin-top: 30px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+
