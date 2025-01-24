@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Your Meal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Order Your Foo Meal</h1>
+      </header>
+      <!-- User and restaurant information -->
+      <div id="userInfo">
+        <span id="userGreeting">I hope you’re hungry, <strong id="userName"></strong>!</span>
+      </div>
+      <div id="restaurantInfo">
+        <span id="restaurantGreeting">Welcome to <strong id="restaurantName"></strong>!</span>
+      </div>
+        <!-- Menu container -->
+      <div id="menuContainer" class="menu-container"></div>
+      <!-- Total section -->
+      <div id="total-container">
+        <h4 id="total-price">Total: $0.00</h4>
+      </div>
+
+      <!-- Submit order button -->
+      <button id="submitOrder">Submit Foo Order</button>
+    </div>
+
+    <script src="orderScript.js"></script>
+  </body>
+</html>

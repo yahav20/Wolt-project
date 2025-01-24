@@ -2,8 +2,10 @@ const express = require("express");
 require('custom-env').env("prod",'../');
 
 const bodyParser = require("body-parser");
-const orderRoute = require("./routes/order");
+const orderApiRoute = require("./routes/order");
 const mongoose = require("mongoose");
+const path = require('path');
+
 // Initialize Express app
 const app = express();
 app.use(bodyParser.json());
@@ -20,7 +22,14 @@ mongoose
     console.error("MongoDB connection error:", err.message);
   });
 
-app.use("/api/orders", orderRoute);
+app.use("/api/orders", orderApiRoute);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Default route
+app.get('/orders', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'order.html'));
+});
 
 // Start the server
 const PORT = process.env.ORDERS_PORT;

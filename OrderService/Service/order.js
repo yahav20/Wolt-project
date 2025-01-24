@@ -1,15 +1,14 @@
 const Order = require("../model/order");
-const restaurantService = require("../Service/restaurant");
-const userService = require("../Service/user");
-const deliveryService = require("../Service/delivery");
+const restaurantApi = require("../api/restaurant");
+const userApi = require("../api/user");
+const deliveryService = require("../api/delivery");
 
 async function createOrder(data) {
   const { restaurantId, userId, menuItems } = data;
-  
   // Fetch restaurant and user details
-  const restaurant = await restaurantService.getRestaurantById(restaurantId);
+  const restaurant = await restaurantApi.getRestaurantById(restaurantId);
   // Fetch user details
-  const user = await userService.getUserById(userId);
+  const user = await userApi.getUserById(userId);
   //checking user and restaurant exist
   if (!restaurant || !user) {
     throw new Error("Invalid restaurant or user data");
@@ -18,34 +17,57 @@ async function createOrder(data) {
   // Save order to DB
   const order = new Order({
     userId,
-    userName: user.name ,
+    userName: user.name,
     userAddress: user.address,
     restaurantId,
     restaurantName: restaurant.name,
-    items:menuItems,
-    total
+    items: menuItems,
+    total,
   });
   await order.save();
 
-  await userService.updateOrderHistory(userId,order);
-  // deliveryService.postOrderToDelivery(order);
+  await userApi.updateOrderHistory(userId, order);
 
+  await deliveryService.postOrderToDelivery(order);
 
   return order;
 }
 
-async function updateOrderStatus(orderId, status) {
-  const order = await Order.findById(orderId);
-  if (!order) {
-    throw new Error("Order not found");
-  }
-  order.status = status;
-  await order.save();
-  return order;
-}
 // Helper function to calculate total order price
 const calculateTotal = (items) => {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 };
 
-module.exports = { createOrder, updateOrderStatus };
+async function updateOrderStatus(orderId) {
+  const order = await Order.findById(orderId);
+  if (!order) {
+    throw new Error("Order not found");
+  }
+  order.nextStatus();
+  await order.save();
+  return order;
+}
+
+async function getAllOrders() {
+  return await Order.find();
+}
+
+async function getOrderById(id) {
+  return await Order.findById(id);
+}
+
+async function getOrderStatus(id) {
+  const order = await getOrderById(id);
+  if (order == null) {
+    return null;
+  }
+  return order.status;
+}
+
+module.exports = {
+  createOrder,
+  updateOrderStatus,
+  getAllOrders,
+  getOrderById,
+  getOrderStatus,
+};
