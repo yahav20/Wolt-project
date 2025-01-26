@@ -47,8 +47,7 @@ const Order = new Schema({
   },
   status: {
     type: String,
-    enum: Object.values(OrderStatus),
-    default: OrderStatus.RECEIVED
+    default: "Received",
   },
   orderDate: {
     type: Date,

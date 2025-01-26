@@ -29,7 +29,7 @@ const restaurantSchema = new mongoose.Schema({
     },
     menu: [
         {
-            type: mongoose.Schema.Types.name,
+            type: mongoose.Schema.Types.String,
             ref: 'CategoryItem'
         }
     ]

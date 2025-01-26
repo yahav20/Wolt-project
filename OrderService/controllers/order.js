@@ -37,6 +37,7 @@ async function createOrderHandler(req, res) {
 async function updateOrderStatusHandler(req, res) {
   try {
     const { id } = req.params;
+    const { status } = req.body;
     // Call service to update the order status
     const updatedOrder = await orderService.updateOrderStatus(id, status);
     // Respond with the updated order

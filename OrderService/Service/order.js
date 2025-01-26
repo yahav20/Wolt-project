@@ -38,12 +38,12 @@ const calculateTotal = (items) => {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);
 };
 
-async function updateOrderStatus(orderId) {
+async function updateOrderStatus(orderId,status) {
   const order = await Order.findById(orderId);
   if (!order) {
     throw new Error("Order not found");
   }
-  order.nextStatus();
+  order.status = status;
   await order.save();
   return order;
 }
