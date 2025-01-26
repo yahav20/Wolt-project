@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Progress Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .tracker-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-container {
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+            z-index: 2;
+        }
+
+        .status-points {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .status-point {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 3px solid #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .status-point.active {
+            border-color: #4CAF50;
+            background: #4CAF50;
+        }
+
+        .status-point.completed {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .status-point.completed::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+        }
+
+        .status-label {
+            position: absolute;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .status-point.active .status-label {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .current-status {
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .current-status h2 {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .current-status p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .status-point.active {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="tracker-container">
+        <div class="progress-container">
+            <div class="progress-bar-bg">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="status-points" id="statusPoints">
+            </div>
+        </div>
+        <div class="current-status">
+            <h2 id="currentStatusTitle">Order Received</h2>
+            <p id="currentStatusDesc">We've got your order!</p>
+        </div>
+    </div>
+
+    <script>
+        const deliveryStates = [
+            { status: "Order Received", description: "We've got your order!" },
+            { status: "Preparing", description: "Your meal is being cooked" },
+            { status: "Ready for Pickup", description: "Your order is packed and ready" },
+            { status: "Out for Delivery", description: "Your delivery guy is on the way route" },
+            { status: "Delivered", description: "Enjoy your meal!" }
+        ];
+
+        const statusPointsContainer = document.getElementById('statusPoints');
+        const progressBar = document.getElementById('progressBar');
+        const currentStatusTitle = document.getElementById('currentStatusTitle');
+        const currentStatusDesc = document.getElementById('currentStatusDesc');
+
+        // Create status points
+        deliveryStates.forEach((state, index) => {
+            const point = document.createElement('div');
+            point.className = 'status-point';
+            if (index === 0) point.classList.add('active');
+            
+            const label = document.createElement('div');
+            label.className = 'status-label';
+            label.textContent = state.status;
+            
+            point.appendChild(label);
+            statusPointsContainer.appendChild(point);
+        });
+
+        let currentStep = 0;
+        const statusPoints = document.querySelectorAll('.status-point');
+
+        function updateProgress(step) {
+            // Update progress bar
+            const progress = (step / (deliveryStates.length - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update status points
+            statusPoints.forEach((point, index) => {
+                point.classList.remove('active');
+                if (index < step) {
+                    point.classList.add('completed');
+                } else if (index === step) {
+                    point.classList.add('active');
+                } else {
+                    point.classList.remove('completed');
+                }
+            });
+
+            // Update current status text
+            currentStatusTitle.textContent = deliveryStates[step].status;
+            currentStatusDesc.textContent = deliveryStates[step].description;
+        }
+
+        // Simulate progress updates
+        setInterval(() => {
+            if (currentStep < deliveryStates.length - 1) {
+                currentStep++;
+                updateProgress(currentStep);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
