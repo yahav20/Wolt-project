@@ -6,16 +6,15 @@ const submitOrderButton = document.getElementById("submitOrder");
 const totalDisplay = document.getElementById("total-price");
 
 // Hardcoded user ID for demonstration purposes
-const userId = "67934e448e55f6dbbbcf089c";
+const userId = "679353daf196121bb81b84a7";
 const params = new URLSearchParams(window.location.search);
 const restaurantId = params.get("restaurantId");
 
 // API object containing methods to fetch user and restaurant data
-// API object containing methods to fetch user and restaurant data
 const api = {
   async getUserById(userId) {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    const response = await fetch(`/api/users`, {
+    const response = await fetch(`http://localhost:4000/api/users/test`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +31,7 @@ const api = {
 
   async getRestaurantById(restaurantId) {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    const response = await fetch(`/api/restaurants/${restaurantId}`, {
+    const response = await fetch(`http://localhost:4000/api/restaurants/${restaurantId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,6 +46,8 @@ const api = {
     return await response.json();
   },
 };
+
+
 // Function to fetch user and restaurant data and update the UI
 async function fetchData() {
   try {
@@ -171,16 +172,21 @@ submitOrderButton.addEventListener("click", async () => {
   };
 
   try {
-    const response = await fetch("ORDER_SERVICE_URL", {
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    console.log(token);
+    const response = await fetch("/api/orders/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" , Authorization: `Bearer ${token}`},
       body: JSON.stringify(order),
+       // Include the token in the Authorization header
+
     });
 
     if (!response.ok) throw new Error("Failed to create order");
 
     const result = await response.json();
     alert(`Order created successfully: ${result.orderId}`);
+    window.location.href = "track.html";
   } catch (error) {
     alert(`Failed to create order: ${error.message}`);
   }

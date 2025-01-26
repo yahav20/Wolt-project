@@ -1,4 +1,4 @@
-require('custom-env').env("prod",'../');
+require('custom-env').env(process.env.NODE_ENV,'../config');
 const express = require('express');
 const app = express();
 const PORT = 4000;

@@ -33,14 +33,14 @@ router.use(
 );
 
 router.use(
-  '/', isAuthenticated,
+  '/test', isAuthenticated,
   createProxyMiddleware({
     target: USERS_SERVICE,
     changeOrigin: true,
     pathRewrite: (path, req) => {
       // Rewrite the path to include the :id parameter in the target URL
       const userId = req.params.id;
-      return `/users/id`;
+      return `/users/test`;
     },
   })
 );

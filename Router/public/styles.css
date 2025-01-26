@@ -16,44 +16,53 @@ body {
 
 
 .container {
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 90%;
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 30px;
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 15px;
+  color: white;
 }
 
 h1 {
-  color: #3e4c59;
-  font-size: 2.5em;
+  color: white;
+  font-size: 2.8em;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
 }
 
 /* User and restaurant info styling */
 #userInfo, #restaurantInfo {
-  font-size: 1.8em;
+  font-size: 1.6em;
   text-align: center;
-  color: #010101;
-  background: linear-gradient(135deg, #4facfe, #00f2fe); /* Vibrant gradient */
-  padding: 20px 15px;
-  margin-bottom: 25px;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  letter-spacing: 0.5px; /* Better readability */
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #2dd4bf);
+  padding: 25px 20px;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 /* Highlighted text for user and restaurant names */
 #userInfo strong, #restaurantInfo strong {
-  color: #000000; /* Warm golden highlight */
+  color: #ffffff;
   font-weight: 700;
-  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.6); /* Subtle glow */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 1.1em;
 }
 
 /* Additional hover effect for subtle interactivity */
@@ -108,60 +117,80 @@ h2 {
 }
 
 .menu-item {
-  background: linear-gradient(135deg, #ffffff, #f0f4ff); /* Subtle gradient for depth */
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  padding: 15px;
-  width: calc(25% - 15px); /* Fit 4 items in a row with reduced gaps */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease
+  background: #ffffff;
+  border-radius: 16px;
+  border: none;
+  padding: 20px;
+  width: calc(25% - 20px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #2dd4bf);
 }
 
 .menu-item:hover {
-  transform: scale(1.05); /* Slight zoom effect on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .menu-item h3 {
-  color: #34495e; /* Darker text for item names */
-  font-size: 1.4em; /* Slightly larger font */
-  margin-bottom: 8px;
+  color: #1e293b;
+  font-size: 1.5em;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .menu-item p {
-  color: #7f8c8d; /* Muted gray for descriptions */
-  font-size: 1em;
-  margin-bottom: 10px;
+  color: #64748b;
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 15px;
 }
 
 .menu-item .quantity-control {
   display: flex;
-  justify-content: center; /* Center the quantity controls */
+  justify-content: center;
   align-items: center;
-  gap: 5px; /* Space between buttons and display */
+  gap: 12px;
+  margin-top: 15px;
 }
 
 .menu-item .quantity-control button {
-  background: #3498db; /* Blue for buttons */
+  background: linear-gradient(135deg, #3b82f6, #2dd4bf);
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  width: auto;
+  margin: 0;
 }
 
 .menu-item .quantity-control button:hover {
-  background: #2980b9; /* Darker blue on hover */
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .menu-item .quantity-display {
-  background-color: #ecf0f1; /* Light gray for the quantity display */
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 1rem;
-  text-align: center;
+  background-color: #f1f5f9;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  min-width: 50px;
 }
 
 /* Responsive adjustments */
@@ -179,14 +208,18 @@ h2 {
 
 /* Total section */
 #total-container {
-  text-align: center;
-  margin-top: 20px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  padding: 25px;
+  border-radius: 16px;
+  margin-top: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 #total-price {
-  font-size: 1.5rem;
-  color: #28a745;
+  font-size: 2rem;
+  color: #ffffff;
   font-weight: bold;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 button {
@@ -213,6 +246,35 @@ button:focus {
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+/* Enhanced submit button */
+#submitOrder {
+  background: linear-gradient(135deg, #3b82f6, #2dd4bf);
+  color: white;
+  padding: 18px 35px;
+  font-size: 1.3em;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#submitOrder:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+#submitOrder:disabled {
+  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+  cursor: not-allowed;
+  transform: none;
 }
 
 

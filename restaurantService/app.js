@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan'); // Import morgan
-require('custom-env').env('prod', '../');
+require('custom-env').env(process.env.NODE_ENV, '../config');
 const cors = require('cors');
 // Import Routes
 const restaurantRoutes = require('./routes/restaurant');

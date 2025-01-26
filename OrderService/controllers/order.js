@@ -7,8 +7,8 @@ const orderService = require("../Service/order");
  */
 async function createOrderHandler(req, res) {
   try {
-    const { restaurantId, userId, menuItems } = req.body;
-
+    const { restaurantId, menuItems } = req.body;
+    userId = req.headers['x-user-id'];
     // Validate request payload
     if (
       !restaurantId ||
@@ -20,7 +20,7 @@ async function createOrderHandler(req, res) {
     }
 
     // Call service to create order
-    const order = await orderService.createOrder(req.body);
+    const order = await orderService.createOrder(restaurantId, userId, menuItems);
 
     // Respond with the created order
     res.status(201).json(order);
@@ -38,6 +38,7 @@ async function updateOrderStatusHandler(req, res) {
   try {
     const { id } = req.params;
     const { status } = req.body;
+    console.log(status)
     // Call service to update the order status
     const updatedOrder = await orderService.updateOrderStatus(id, status);
     // Respond with the updated order

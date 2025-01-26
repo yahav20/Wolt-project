@@ -10,7 +10,7 @@ const signout = require('./routes/signout')
 const session = require('express-session');
 const morgan = require('morgan');
 console.log(process.env.NODE_ENV);
-require('custom-env').env("prod",'../');
+require('custom-env').env(process.env.NODE_ENV, '../config');
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mydatabase';
 
 mongoose.connect(MONGO_URI)

@@ -1,0 +1,54 @@
+services:
+  # -------------------------
+  # USERS SERVICE
+  # -------------------------
+  users:
+    build:
+      context: ./UsersService
+      dockerfile: Dockerfile
+    container_name: users
+    env_file:
+      - .env
+    ports:
+      - "${USERS_PORT}:${USERS_PORT}"
+    depends_on:
+      - mongo
+
+  # -------------------------
+  # RESTAURANTS SERVICE
+  # -------------------------
+  restaurants:
+    build:
+      context: ./restaurantsService
+      dockerfile: Dockerfile
+    container_name: restaurants
+    env_file:
+      - .env
+    ports:
+      - "${RESTAURANT_PORT}:${RESTAURANT_PORT}"
+    depends_on:
+      - mongo
+
+  # -------------------------
+  # ORDERS SERVICE
+  # -------------------------
+  orders:
+    build:
+      context: ./OrdersService
+      dockerfile: Dockerfile
+    container_name: orders
+    env_file:
+      - .env
+    ports:
+      - "${ORDERS_PORT}:${ORDERS_PORT}"
+    depends_on:
+      - mongo
+
+  # -------------------------
+  # MONGO
+  # -------------------------
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"

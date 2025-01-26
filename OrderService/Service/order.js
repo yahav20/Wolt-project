@@ -3,8 +3,7 @@ const restaurantApi = require("../api/restaurant");
 const userApi = require("../api/user");
 const deliveryService = require("../api/delivery");
 
-async function createOrder(data) {
-  const { restaurantId, userId, menuItems } = data;
+async function createOrder(restaurantId, userId, menuItems) {
   // Fetch restaurant and user details
   const restaurant = await restaurantApi.getRestaurantById(restaurantId);
   // Fetch user details

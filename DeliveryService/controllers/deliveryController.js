@@ -18,15 +18,15 @@ async function receiveOrderHandler(req, res) {
   try {
     // Assign delivery person
     const deliveryPerson = await DeliveryService.assignDelivery(order);
-    
-    // Progress order status with delivery person context
-    await progressOrderStatus(order, deliveryPerson);
-    
     res.status(200).json({ 
       success: true, 
       order, 
       deliveryPerson 
     });
+    // Progress order status with delivery person context
+    await progressOrderStatus(order, deliveryPerson);
+    
+   
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -40,8 +40,8 @@ async function progressOrderStatus(order, deliveryPerson) {
         deliveryPersonId: deliveryPerson._id 
       };
       
-      await axios.patch(
-        `http://order-service:PORT/api/orders/${order._id}/status`, 
+      axios.patch(
+        `http://localhost:3001/api/orders/${order._id}/status`, 
         updatePayload
       );
 

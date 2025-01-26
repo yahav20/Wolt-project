@@ -4,6 +4,7 @@ const RESTAURANT_SERVICE = process.env.RESTAURANT_SERVICE + "/api/restaurants";
 console.log(RESTAURANT_SERVICE)
 async function getRestaurantById(id) {
   try {
+    console.log(RESTAURANT_SERVICE);
     const restaurant = await axios.get(`${RESTAURANT_SERVICE}/${id}`);
     return restaurant.data;
   } catch (error) {

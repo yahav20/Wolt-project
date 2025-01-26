@@ -10,6 +10,7 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
     console.log();
+    console.log("get user");
     const user = await userService.getUserById(req.params.id);
     if(!user){
         return res.status(404).json({errors : ['Article not found']});

@@ -12,7 +12,7 @@ router.route('/:id')
     .get(userController.getUser)
     .patch(userController.updateHistory)
 
-router.route('/id')
+router.route('/test')
     .post(userController.getUserByToken);
 
 

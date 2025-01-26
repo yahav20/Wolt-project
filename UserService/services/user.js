@@ -8,8 +8,13 @@ const createUser = async (name, mail, password, address) => {
 };
 
 const getUserById = async (id) => {
+    try{
     console.log(id);
     return await User.findById(id);
+    }
+    catch{
+        
+    }
 };
 
 const getUsers = async () => {

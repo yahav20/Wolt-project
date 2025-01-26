@@ -1,13 +1,12 @@
 const express = require("express");
-require("custom-env").env(process.env.NODE_ENV, './config');
-
+require('custom-env').env(process.env.NODE_ENV, '../config');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const path = require("path");
 // Import user API functions
 const { getUserById, updateOrderHistory } = require("./api/user");
 const { getRestaurantById } = require("./api/restaurant");  
-
+const ordersRoute = require('./routes/order')
 // Initialize Express app
 const app = express();
 app.use(bodyParser.json());
@@ -52,6 +51,7 @@ app.get("/api/restaurant/:id", async (req, res) => {
   }
 });
 
+app.use('/api/orders', ordersRoute);
 
 // Default route to serve the order page
 app.get("/orders", (req, res) => {
