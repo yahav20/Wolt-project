@@ -6,7 +6,18 @@ MONGO_URI = "mongodb://127.0.0.1:27017/woltTest"
 client = pymongo.MongoClient(MONGO_URI)
 db = client.woltTest
 restaurants_collection = db.restaurants
-category_items_collection = db.categorytems
+category_items_collection = db.categoryitems
+
+# Default opening hours
+default_hours = {
+    "Monday": "9:00 AM - 9:00 PM",
+    "Tuesday": "9:00 AM - 9:00 PM",
+    "Wednesday": "9:00 AM - 9:00 PM",
+    "Thursday": "9:00 AM - 9:00 PM",
+    "Friday": "9:00 AM - 10:00 PM",
+    "Saturday": "10:00 AM - 10:00 PM",
+    "Sunday": "10:00 AM - 8:00 PM"
+}
 
 # Clear existing data from collections
 def clear_database():
@@ -14,16 +25,39 @@ def clear_database():
     category_items_collection.delete_many({})
     print("Cleared restaurants and category items collections.")
 
-# Example restaurant categories and opening hours
-categories = ['Italian', 'Pizza', 'Fast Food', 'Chinese', 'Indian', 'Dessert', 'Cafe']
-default_hours = {
-    "monday": {"open": "09:00", "close": "22:00"},
-    "tuesday": {"open": "09:00", "close": "22:00"},
-    "wednesday": {"open": "09:00", "close": "22:00"},
-    "thursday": {"open": "09:00", "close": "22:00"},
-    "friday": {"open": "09:00", "close": "22:00"},
-    "saturday": {"open": "10:00", "close": "23:00"},
-    "sunday": {"open": "10:00", "close": "21:00"}
+# Example restaurant categories and items by type
+categories_by_type = {
+    "Italian": ["Pasta", "Pizza", "Appetizers"],
+    "Pizza": ["Classic Pizzas", "Specialty Pizzas", "Desserts"],
+    "Fast Food": ["Burgers", "Fries", "Shakes"],
+    "Chinese": ["Noodles", "Rice Dishes", "Dim Sum"],
+    "Indian": ["Curries", "Breads", "Snacks"],
+    "Dessert": ["Cakes", "Cookies", "Ice Cream"],
+    "Cafe": ["Beverages", "Sandwiches", "Pastries"]
+}
+
+items_by_category = {
+    "Pasta": ["Spaghetti Carbonara", "Fettuccine Alfredo", "Penne Arrabiata"],
+    "Pizza": ["Margherita", "Pepperoni", "Veggie Supreme"],
+    "Appetizers": ["Bruschetta", "Caprese Salad", "Garlic Bread"],
+    "Classic Pizzas": ["Cheese Pizza", "Hawaiian Pizza", "BBQ Chicken Pizza"],
+    "Specialty Pizzas": ["Truffle Pizza", "Buffalo Chicken Pizza", "Mediterranean Pizza"],
+    "Desserts": ["Tiramisu", "Chocolate Lava Cake", "Gelato"],
+    "Burgers": ["Cheeseburger", "Bacon Burger", "Veggie Burger"],
+    "Fries": ["Classic Fries", "Sweet Potato Fries", "Loaded Fries"],
+    "Shakes": ["Vanilla Shake", "Chocolate Shake", "Strawberry Shake"],
+    "Noodles": ["Chow Mein", "Lo Mein", "Pad Thai"],
+    "Rice Dishes": ["Fried Rice", "Steamed Rice", "Sticky Rice"],
+    "Dim Sum": ["Pork Dumplings", "Shrimp Dumplings", "Vegetable Dumplings"],
+    "Curries": ["Butter Chicken", "Paneer Tikka Masala", "Lamb Vindaloo"],
+    "Breads": ["Naan", "Paratha", "Chapati"],
+    "Snacks": ["Samosa", "Pakora", "Bhel Puri"],
+    "Cakes": ["Cheesecake", "Black Forest Cake", "Red Velvet Cake"],
+    "Cookies": ["Chocolate Chip Cookies", "Oatmeal Raisin Cookies", "Sugar Cookies"],
+    "Ice Cream": ["Vanilla", "Chocolate", "Strawberry"],
+    "Beverages": ["Coffee", "Tea", "Smoothies"],
+    "Sandwiches": ["Club Sandwich", "Grilled Cheese", "BLT"],
+    "Pastries": ["Croissant", "Danish", "Muffin"]
 }
 
 def generate_restaurant_data():
@@ -53,18 +87,24 @@ def generate_restaurant_data():
     ]
 
     for restaurant in restaurant_data:
-        menu = [
-            {
-                "name": f"Dish {j} from {restaurant['name']}",
-                "description": f"A delicious Dish {j} specially made by {restaurant['name']}",
-                "price": random.randint(20, 100)
-            }
-            for j in range(1, random.randint(8, 15))
-        ]
+        restaurant_type = random.choice(list(categories_by_type.keys()))
+        categories = categories_by_type[restaurant_type]
+
+        menu = []
+        for category in categories:
+            num_items = random.randint(3, 10)
+            items = random.sample(items_by_category[category], min(num_items, len(items_by_category[category])))
+            for item in items:
+                menu.append({
+                    "name": item,
+                    "category": category,
+                    "description": f"A delicious {item} from {restaurant['name']}.",
+                    "price": random.randint(20, 100)
+                })
 
         data.append({
             "name": restaurant['name'],
-            "type": random.choice(categories),
+            "type": restaurant_type,
             "address": {
                 "street": f"Main Street {random.randint(1, 100)}",
                 "city": restaurant['city'],
@@ -83,20 +123,30 @@ def generate_restaurant_data():
 def add_restaurant_with_categories(restaurant):
     """Add a restaurant and its menu categories to the database."""
     category_items = []
-    if restaurant['menu']:
-        for item in restaurant['menu']:
-            category_item = {
-                "name": item['name'],
-                "items": [{
-                    "name": item['name'],
-                    "description": item['description'],
-                    "price": item['price']
-                }],
-                "restaurant": None  # Placeholder for now
-            }
-            inserted_category = category_items_collection.insert_one(category_item)
-            category_items.append(inserted_category.inserted_id)
 
+    # Group menu items by category
+    categories = {}
+    for item in restaurant['menu']:
+        category_name = item['category']
+        if category_name not in categories:
+            categories[category_name] = []
+        categories[category_name].append({
+            "name": item['name'],
+            "description": item['description'],
+            "price": item['price']
+        })
+
+    # Create a category document for each category with grouped items
+    for category_name, items in categories.items():
+        category_item = {
+            "name": category_name,
+            "items": items,
+            "restaurant": None  # Placeholder for now
+        }
+        inserted_category = category_items_collection.insert_one(category_item)
+        category_items.append(inserted_category.inserted_id)
+
+    # Add restaurant document with category references
     new_restaurant = {
         "name": restaurant['name'],
         "type": restaurant['type'],
@@ -105,11 +155,11 @@ def add_restaurant_with_categories(restaurant):
         "email": restaurant['email'],
         "website": restaurant['website'],
         "openingHours": restaurant['openingHours'],
-        "menu": category_items
+        "menu": category_items  # References to category items
     }
     inserted_restaurant = restaurants_collection.insert_one(new_restaurant)
 
-    # Update the restaurant field in category items
+    # Update category documents to reference the restaurant
     category_items_collection.update_many(
         {"_id": {"$in": category_items}},
         {"$set": {"restaurant": inserted_restaurant.inserted_id}}
