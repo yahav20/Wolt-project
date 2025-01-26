@@ -1,0 +1,32 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const deliveryRoutes = require("./routes/delivery");
+const path = require('path');  
+const app = express();
+
+// Middleware for parsing JSON
+app.use(express.json());
+
+// Register delivery routes
+app.use("/api", deliveryRoutes);
+
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'track.html'));
+});
+
+// Connect to MongoDB
+mongoose.connect("mongodb://localhost:27017/deliveryGuys", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log("Connected to MongoDB");
+}).catch((err) => {
+    console.error("MongoDB connection error:", err);
+});
+
+const PORT = 3800;
+app.listen(PORT, () => {
+    console.log(`Delivery Microservice running on port ${PORT}`);
+});
