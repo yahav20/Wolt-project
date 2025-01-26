@@ -43,7 +43,20 @@ services:
       - "${ORDERS_PORT}:${ORDERS_PORT}"
     depends_on:
       - mongo
-
+  # -------------------------
+  # DELIVERY SERVICE
+  # -------------------------
+  delivery:
+    build:
+      context: ./DeliveryService
+      dockerfile: Dockerfile
+    container_name: delivery
+    env_file:
+      - .env
+    ports:
+      - "${DELIVERY_PORT}:${DELIVERY_PORT}"
+    depends_on:
+      - mongo
   # -------------------------
   # MONGO
   # -------------------------
