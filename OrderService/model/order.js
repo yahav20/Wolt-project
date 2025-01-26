@@ -2,15 +2,6 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-// Enum for order statuses
-const OrderStatus = {
-  RECEIVED: "Received",
-  COOKING: "Cooking",
-  READY_FOR_PICKUP: "Ready for Pickup",
-  OUT_FOR_DELIVERY: "Out for Delivery",
-  COMPLETED: "Completed",
-};
-
 const Order = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
