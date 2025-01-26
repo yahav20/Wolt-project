@@ -1,5 +1,5 @@
 const express = require("express");
-require("custom-env").env("prod", "../");
+require("custom-env").env(process.env.NODE_ENV, './config');
 
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
