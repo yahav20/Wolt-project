@@ -6,7 +6,7 @@ MONGO_URI = "mongodb://127.0.0.1:27017/woltTest"
 client = pymongo.MongoClient(MONGO_URI)
 db = client.woltTest
 restaurants_collection = db.restaurants
-category_items_collection = db.categoryItems
+category_items_collection = db.categorytems
 
 # Clear existing data from collections
 def clear_database():
