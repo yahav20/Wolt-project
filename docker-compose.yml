@@ -57,6 +57,19 @@ services:
       - "${DELIVERY_PORT}:${DELIVERY_PORT}"
     depends_on:
       - mongo
+    # -------------------------
+  # DELIVERY SERVICE
+  # -------------------------
+  delivery:
+    build:
+      context: ./Router
+      dockerfile: Dockerfile
+    container_name: router
+    env_file:
+      - .env
+    ports:
+      - "${ROUTER_PORT}:${ROUTER_PORT}"
+
   # -------------------------
   # MONGO
   # -------------------------
