@@ -2,17 +2,39 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
     const restaurantContainer = document.getElementById("restaurantContainer");
+    const searchInput = document.getElementById("searchInput");
   
     try {
       const restaurants = await fetchRestaurants();
+      
+      // Store restaurants globally for filtering
+      window.allRestaurants = restaurants;
+      
+      // Initial render
       renderRestaurants(restaurants);
+
+      // Add search event listener
+      searchInput.addEventListener("input", handleSearch);
+
+      // Add clear search functionality
+      const clearSearch = document.getElementById("clearSearch");
+
+      searchInput.addEventListener("input", (e) => {
+          clearSearch.style.display = e.target.value ? "block" : "none";
+      });
+
+      clearSearch.addEventListener("click", () => {
+          searchInput.value = "";
+          clearSearch.style.display = "none";
+          renderRestaurants(window.allRestaurants);
+      });
     } catch (error) {
       console.error("Error fetching restaurants:", error.message);
       restaurantContainer.textContent = "Failed to load restaurants. Please try again later.";
     }
-  });
-  
-  async function fetchRestaurants() {
+});
+
+async function fetchRestaurants() {
     try {
         // Get the token from localStorage
         const token = localStorage.getItem("token");
@@ -40,8 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 }
 
-  
-  function isOpenNow(openingHours) {
+function isOpenNow(openingHours) {
     // Create a date object for Israel time
     const now = new Date().toLocaleString("en-US", {timeZone: "Asia/Jerusalem"});
     const israelTime = new Date(now);
@@ -61,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return { isOpen: false, closesAt: null };
 }
   
-  function renderRestaurants(restaurants) {
+function renderRestaurants(restaurants) {
     const restaurantContainer = document.getElementById("restaurantContainer");
     restaurantContainer.innerHTML = "";
   
@@ -106,4 +127,50 @@ document.addEventListener("DOMContentLoaded", async () => {
         restaurantContainer.appendChild(restaurantDiv);
     });
 }
+
+// Add search handler function
+function handleSearch(event) {
+    const searchTerm = event.target.value.toLowerCase().trim();
+    const filteredRestaurants = window.allRestaurants.filter(restaurant => {
+        return (
+            restaurant.name.toLowerCase().includes(searchTerm) ||
+            restaurant.type.toLowerCase().includes(searchTerm) ||
+            restaurant.address.city.toLowerCase().includes(searchTerm) ||
+            restaurant.address.street.toLowerCase().includes(searchTerm)
+        );
+    });
+
+    // Show no results message if no matches
+    if (filteredRestaurants.length === 0) {
+        const restaurantContainer = document.getElementById("restaurantContainer");
+        restaurantContainer.innerHTML = `
+            <div class="no-results">
+                <i class="fas fa-search"></i>
+                <p>No restaurants found matching "${event.target.value}"</p>
+            </div>
+        `;
+        return;
+    }
+
+    renderRestaurants(filteredRestaurants);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollButton = document.querySelector('.scroll-to-top');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollButton.classList.add('visible');
+        } else {
+            scrollButton.classList.remove('visible');
+        }
+    });
+
+    scrollButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
     

@@ -5,18 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>All Restaurants</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>Our Restaurants</h1>
+        <h1><i class="fas fa-utensils"></i> Our Restaurants</h1>
+        <p class="subtitle">Find and order from the best restaurants in town</p>
       </header>
+
+      <!-- Search and filter section -->
+      <div class="search-section">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search by restaurant name, type, or location..."
+            autocomplete="off"
+          >
+          <button id="clearSearch" class="clear-search" style="display: none;">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
 
       <!-- Restaurant list container -->
       <div id="restaurantContainer" class="restaurant-container">
-        Loading restaurants...
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Loading restaurants...
+        </div>
       </div>
     </div>
+
+    <button class="scroll-to-top" aria-label="Scroll to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="restaurantsPage.js"></script>
   </body>
