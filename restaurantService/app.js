@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(morgan('combined')); // Use morgan for logging
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/woltTest')
+  .connect(process.env.CONNECTION_STRING)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB', err));
 

@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const DELIVERY_SERVICE = "http://localhost:3800/api/";
+const DELIVERY_SERVICE = process.env.DELIVERY_SERVICE+"/api";
 
 async function postOrderToDelivery(order) {
   try {

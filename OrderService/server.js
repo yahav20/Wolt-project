@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // MongoDB connection setup
 mongoose
-  .connect("mongodb://localhost:27017/orders", {
+  .connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

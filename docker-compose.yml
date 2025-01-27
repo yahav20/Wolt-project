@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # -------------------------
   # USERS SERVICE
@@ -34,6 +36,19 @@ services:
       - "${RESTAURANT_PORT}:${RESTAURANT_PORT}"
     volumes:
       - ./config:/config
+    depends_on:
+      - mongo
+
+  # -------------------------
+  # RESTAURANTS SERVICE SETTER
+  # -------------------------
+  python-service:
+    build:
+      context: ./restaurantService/test  # Update with the path to your Python code folder
+      dockerfile: Dockerfile  # Make sure the correct Dockerfile is used
+    container_name: python-service
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/Wolt  # Update if necessary for your app
     depends_on:
       - mongo
 

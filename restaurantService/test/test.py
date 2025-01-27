@@ -2,9 +2,9 @@ import random
 import pymongo
 
 # MongoDB connection setup
-MONGO_URI = "mongodb://127.0.0.1:27017/woltTest"
+MONGO_URI = "mongodb://mongo:27017/Wolt"
 client = pymongo.MongoClient(MONGO_URI)
-db = client.woltTest
+db = client.Wolt
 restaurants_collection = db.restaurants
 category_items_collection = db.categoryitems
 

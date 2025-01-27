@@ -10,7 +10,7 @@ const restaurantId = params.get("restaurantId");
 
 // API object containing methods to fetch user and restaurant data
 const api = {
-  async getUserById(userId) {
+  async getUserById() {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
     const response = await fetch(`http://localhost:4000/api/users/test`, {
       method: "POST",
@@ -50,7 +50,7 @@ const api = {
 async function fetchData() {
   try {
     const [userResponse, restaurantResponse] = await Promise.all([
-      api.getUserById(userId),
+      api.getUserById(),
       api.getRestaurantById(restaurantId),
     ]);
 
@@ -163,7 +163,6 @@ submitOrderButton.addEventListener("click", async () => {
   const total = selectedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   //create order object
   const order = {
-    userId: userId,
     restaurantId: restaurantId,
     menuItems: selectedItems,
     totalPrice: total,

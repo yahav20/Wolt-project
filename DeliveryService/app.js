@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/deliveryGuys", {
+mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
@@ -26,7 +26,7 @@ mongoose.connect("mongodb://localhost:27017/deliveryGuys", {
     console.error("MongoDB connection error:", err);
 });
 
-const PORT = 3800;
+const PORT = process.env.DELIVERY_PORT;
 app.listen(PORT, () => {
     console.log(`Delivery Microservice running on port ${PORT}`);
 });
