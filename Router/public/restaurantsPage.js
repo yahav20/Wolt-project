@@ -67,7 +67,7 @@ function isOpenNow(openingHours) {
     const now = new Date().toLocaleString("en-US", {timeZone: "Asia/Jerusalem"});
     const israelTime = new Date(now);
     
-    const currentDay = israelTime.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
+    const currentDay = israelTime.toLocaleString('en-US', { weekday: 'long' }).toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
     const currentTime = `${String(israelTime.getHours()).padStart(2, '0')}:${String(israelTime.getMinutes()).padStart(2, '0')}`;
   
     const todayHours = openingHours[currentDay];

@@ -7,7 +7,7 @@ client = pymongo.MongoClient(MONGO_URI)
 db = client.Wolt
 restaurants_collection = db.restaurants
 category_items_collection = db.categoryitems
-delivery_personnel_collection = db.DeliveryPerson
+delivery_personnel_collection = db.deliverypeople
 
 # Default opening hours
 default_hours = {
