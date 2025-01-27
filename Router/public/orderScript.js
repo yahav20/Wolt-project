@@ -5,8 +5,6 @@ const restaurantInfoDiv = document.getElementById("restaurantName");
 const submitOrderButton = document.getElementById("submitOrder");
 const totalDisplay = document.getElementById("total-price");
 
-// Hardcoded user ID for demonstration purposes
-const userId = "679353daf196121bb81b84a7";
 const params = new URLSearchParams(window.location.search);
 const restaurantId = params.get("restaurantId");
 
