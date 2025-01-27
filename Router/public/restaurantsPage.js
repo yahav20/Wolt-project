@@ -26,8 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
         });
 
-        console.log("Response status:", response.status);
-
         // Check if the response is OK
         if (!response.ok) {
             throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
@@ -35,7 +33,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Parse and return the JSON data
         const data = await response.json();
-        console.log("Fetched data:", data);
         return data;
     } catch (error) {
         console.error("Error in fetchRestaurants:", error.message);
@@ -45,29 +42,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   
   function isOpenNow(openingHours) {
-    const now = new Date();
-    const currentDay = now.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
-    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    // Create a date object for Israel time
+    const now = new Date().toLocaleString("en-US", {timeZone: "Asia/Jerusalem"});
+    const israelTime = new Date(now);
+    
+    const currentDay = israelTime.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
+    const currentTime = `${String(israelTime.getHours()).padStart(2, '0')}:${String(israelTime.getMinutes()).padStart(2, '0')}`;
   
     const todayHours = openingHours[currentDay];
   
     if (todayHours && todayHours.open && todayHours.close) {
-      if (currentTime >= todayHours.open && currentTime < todayHours.close) {
-        return { isOpen: true, closesAt: todayHours.close };
-      } else {
-        return { isOpen: false, closesAt: null };
-      }
+        if (currentTime >= todayHours.open && currentTime < todayHours.close) {
+            return { isOpen: true, closesAt: todayHours.close };
+        } else {
+            return { isOpen: false, closesAt: null };
+        }
     }
     return { isOpen: false, closesAt: null };
-  }
+}
   
   function renderRestaurants(restaurants) {
     const restaurantContainer = document.getElementById("restaurantContainer");
     restaurantContainer.innerHTML = "";
   
     if (restaurants.length === 0) {
-      restaurantContainer.textContent = "No restaurants available.";
-      return;
+        restaurantContainer.textContent = "No restaurants available.";
+        return;
     }
   
     restaurants.forEach((restaurant) => {
@@ -79,23 +79,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Add detailed content to the restaurant item
         restaurantDiv.innerHTML = `
         <div class="restaurant-card">
-          <h2>${restaurant.name}</h2>
-          <p><strong>Type:</strong> ${restaurant.type}</p>
-          <p><strong>Address:</strong> ${restaurant.address.street}, ${restaurant.address.city}, ${restaurant.address.state}, ${restaurant.address.zipCode}</p>
-          <p><strong>Phone:</strong> ${restaurant.phone}</p>
-          <p><strong>Status:</strong> ${isOpen ? `Open now, closes at ${closesAt}` : "Closed now"}</p>
-          <button class="order-button" data-id="${restaurant.id}">Order Now</button>
+            <h2>${restaurant.name}</h2>
+            <p><strong>Type:</strong> ${restaurant.type}</p>
+            <p><strong>Address:</strong> ${restaurant.address.street}, ${restaurant.address.city}, ${restaurant.address.state}, ${restaurant.address.zipCode}</p>
+            <p><strong>Phone:</strong> ${restaurant.phone}</p>
+            <p class="status ${isOpen ? 'open' : 'closed'}">
+                <strong>Status:</strong> ${isOpen ? `Open now, closes at ${closesAt}` : "Closed now"}
+            </p>
+            <button class="order-button ${!isOpen ? 'disabled' : ''}" 
+                    data-id="${restaurant.id}"
+                    ${!isOpen ? 'disabled' : ''}>
+                ${isOpen ? 'Order Now' : 'Currently Closed'}
+            </button>
         </div>
       `;
       
-      // Add click event listener for the "Order Now" button
-      const orderButton = restaurantDiv.querySelector('.order-button');
-      orderButton.addEventListener('click', () => {
-        const restaurantId = restaurant._id;
-        window.location.href = `/order.html?restaurantId=${restaurantId}`;
-      });
+        // Add click event listener for the "Order Now" button only if restaurant is open
+        const orderButton = restaurantDiv.querySelector('.order-button');
+        if (isOpen) {
+            orderButton.addEventListener('click', () => {
+                const restaurantId = restaurant._id;
+                window.location.href = `/order.html?restaurantId=${restaurantId}`;
+            });
+        }
     
         restaurantContainer.appendChild(restaurantDiv);
-      });
-    }
+    });
+}
     
