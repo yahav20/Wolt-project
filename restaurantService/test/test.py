@@ -7,6 +7,7 @@ client = pymongo.MongoClient(MONGO_URI)
 db = client.Wolt
 restaurants_collection = db.restaurants
 category_items_collection = db.categoryitems
+delivery_personnel_collection = db.DeliveryPerson
 
 # Default opening hours
 default_hours = {
@@ -24,6 +25,25 @@ def clear_database():
     restaurants_collection.delete_many({})
     category_items_collection.delete_many({})
     print("Cleared restaurants and category items collections.")
+
+
+def add_delivery_guys(num_guys=10):
+    """Generate and add delivery personnel to the database."""
+    names = [
+        "John", "Jane", "Alex", "Emma", "Chris", "Olivia",
+        "Omer", "Or", "Yahav", "Daniel", "Ido"
+    ]
+
+    delivery_personnel = []
+    for _ in range(num_guys):
+        person = {
+            "name": random.choice(names),
+            "speed": random.uniform(10, 150),
+            "available": random.choice([True, False])
+        }
+        delivery_personnel.append(person)
+    
+    delivery_personnel_collection.insert_many(delivery_personnel)
 
 # Example restaurant categories and items by type
 categories_by_type = {
@@ -178,3 +198,4 @@ if __name__ == "__main__":
     clear_database()
     restaurant_data = generate_restaurant_data()
     insert_restaurants_to_db(restaurant_data)
+    add_delivery_guys(5)
