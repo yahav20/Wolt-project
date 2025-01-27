@@ -131,6 +131,23 @@
         .status-point.active {
             animation: pulse 2s infinite;
         }
+
+        #returnHomeBtn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: none;
+            transition: background-color 0.3s ease;
+        }
+
+        #returnHomeBtn:hover {
+            background: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -146,6 +163,9 @@
             <h2 id="currentStatusTitle">Order Received</h2>
             <p id="currentStatusDesc">We've got your order!</p>
         </div>
+        <button id="returnHomeBtn" style="display: none;" onclick="returnHome()">
+            Return Home
+        </button>
     </div>
 
     <script>
@@ -161,6 +181,7 @@
         const progressBar = document.getElementById('progressBar');
         const currentStatusTitle = document.getElementById('currentStatusTitle');
         const currentStatusDesc = document.getElementById('currentStatusDesc');
+        const returnHomeBtn = document.getElementById('returnHomeBtn');
 
         // Create status points
         deliveryStates.forEach((state, index) => {
@@ -199,6 +220,11 @@
             // Update current status text
             currentStatusTitle.textContent = deliveryStates[step].status;
             currentStatusDesc.textContent = deliveryStates[step].description;
+
+            // Show return home button when delivered
+            if (deliveryStates[step].status === "Delivered") {
+                returnHomeBtn.style.display = "block";
+            }
         }
 
         // Simulate progress updates
@@ -208,6 +234,10 @@
                 updateProgress(currentStep);
             }
         }, 5000);
+
+        function returnHome() {
+            window.location.href = 'restaurantsPage.html';
+        }
     </script>
 </body>
 </html>
