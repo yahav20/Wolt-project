@@ -71,14 +71,36 @@ function isOpenNow(openingHours) {
     const currentTime = `${String(israelTime.getHours()).padStart(2, '0')}:${String(israelTime.getMinutes()).padStart(2, '0')}`;
   
     const todayHours = openingHours[currentDay];
-  
-    if (todayHours && todayHours.open && todayHours.close) {
-        if (currentTime >= todayHours.open && currentTime < todayHours.close) {
-            return { isOpen: true, closesAt: todayHours.close };
+    
+    if (todayHours) {
+        const [openTime, closeTime] = todayHours.split(' - ');
+        
+        // Convert times to minutes for easier comparison
+        const convertTimeToMinutes = (timeStr) => {
+            const [hours, minutes] = (timeStr.includes(':') ? timeStr : `${timeStr}:00`)
+                .split(':')
+                .map(num => parseInt(num));
+            return hours * 60 + minutes;
+        };
+
+        const currentMinutes = israelTime.getHours() * 60 + israelTime.getMinutes();
+        const openMinutes = convertTimeToMinutes(openTime);
+        const closeMinutes = convertTimeToMinutes(closeTime);
+        
+        // Handle cases where closing time is on the next day (e.g., "22:00 - 2:00")
+        if (closeMinutes < openMinutes) {
+            return {
+                isOpen: currentMinutes >= openMinutes || currentMinutes < closeMinutes,
+                closesAt: closeTime
+            };
         } else {
-            return { isOpen: false, closesAt: null };
+            return {
+                isOpen: currentMinutes >= openMinutes && currentMinutes < closeMinutes,
+                closesAt: closeTime
+            };
         }
     }
+    
     return { isOpen: false, closesAt: null };
 }
   
