@@ -42,7 +42,7 @@ services:
   # -------------------------
   # RESTAURANTS SERVICE SETTER
   # -------------------------
-  python-service:
+  restaurant-setter:
     build:
       context: ./restaurantService/test  # Update with the path to your Python code folder
       dockerfile: Dockerfile  # Make sure the correct Dockerfile is used
