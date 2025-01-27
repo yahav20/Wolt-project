@@ -11,7 +11,7 @@ const session = require('express-session');
 const morgan = require('morgan');
 console.log(process.env.NODE_ENV);
 require('custom-env').env(process.env.NODE_ENV, '../config');
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mydatabase';
+const MONGO_URI = process.env.CONNECTION_STRING;
 
 mongoose.connect(MONGO_URI)
 var app = express();

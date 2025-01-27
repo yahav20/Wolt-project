@@ -5,13 +5,13 @@ FROM node:18
 WORKDIR /app
 
 # Copy the package.json and package-lock.json from the correct location
-COPY Router/package*.json ./
+COPY ./package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code into the container
-COPY Router/ ./
+COPY . .
 
 # Expose the application port
 EXPOSE ${ROUTER_PORT}

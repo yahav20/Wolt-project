@@ -4,13 +4,17 @@ services:
   # -------------------------
   users:
     build:
-      context: ./UsersService
+      context: ./UserService
       dockerfile: Dockerfile
     container_name: users
     env_file:
-      - .env
+      - config/.env.dev
+    environment:
+      - PORT=${USERS_PORT}
     ports:
       - "${USERS_PORT}:${USERS_PORT}"
+    volumes:
+      - ./config:/config
     depends_on:
       - mongo
 
@@ -19,13 +23,17 @@ services:
   # -------------------------
   restaurants:
     build:
-      context: ./restaurantsService
+      context: ./restaurantService
       dockerfile: Dockerfile
     container_name: restaurants
     env_file:
-      - .env
+      - config/.env.dev
+    environment:
+      - PORT=${RESTAURANT_PORT}
     ports:
       - "${RESTAURANT_PORT}:${RESTAURANT_PORT}"
+    volumes:
+      - ./config:/config
     depends_on:
       - mongo
 
@@ -34,15 +42,20 @@ services:
   # -------------------------
   orders:
     build:
-      context: ./OrdersService
+      context: ./OrderService
       dockerfile: Dockerfile
     container_name: orders
     env_file:
-      - .env
+      - config/.env.dev
+    environment:
+      - PORT=${ORDERS_PORT}
     ports:
       - "${ORDERS_PORT}:${ORDERS_PORT}"
+    volumes:
+      - ./config:/config
     depends_on:
       - mongo
+
   # -------------------------
   # DELIVERY SERVICE
   # -------------------------
@@ -52,23 +65,32 @@ services:
       dockerfile: Dockerfile
     container_name: delivery
     env_file:
-      - .env
+      - config/.env.dev
+    environment:
+      - PORT=${DELIVERY_PORT}
     ports:
       - "${DELIVERY_PORT}:${DELIVERY_PORT}"
+    volumes:
+      - ./config:/config
     depends_on:
       - mongo
-    # -------------------------
-  # DELIVERY SERVICE
+
   # -------------------------
-  delivery:
+  # ROUTER SERVICE
+  # -------------------------
+  router:
     build:
       context: ./Router
       dockerfile: Dockerfile
     container_name: router
     env_file:
-      - .env
+      - config/.env.dev
+    environment:
+      - PORT=${ROUTER_PORT}
     ports:
       - "${ROUTER_PORT}:${ROUTER_PORT}"
+    volumes:
+      - ./config:/config
 
   # -------------------------
   # MONGO
