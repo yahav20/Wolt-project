@@ -10,13 +10,13 @@ category_items_collection = db.categoryitems
 
 # Default opening hours
 default_hours = {
-    "Monday": "9:00 AM - 9:00 PM",
-    "Tuesday": "9:00 AM - 9:00 PM",
-    "Wednesday": "9:00 AM - 9:00 PM",
-    "Thursday": "9:00 AM - 9:00 PM",
-    "Friday": "9:00 AM - 10:00 PM",
-    "Saturday": "10:00 AM - 10:00 PM",
-    "Sunday": "10:00 AM - 8:00 PM"
+    "Monday": "9:00 - 21:00",
+    "Tuesday": "9:00 - 21:00",
+    "Wednesday": "9:00 - 21:00",
+    "Thursday": "9:00 - 21:00",
+    "Friday": "9:00 - 22:00",
+    "Saturday": "10:00 - 22:00",
+    "Sunday": "10:00 - 20:00"
 }
 
 # Clear existing data from collections

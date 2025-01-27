@@ -29,21 +29,47 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   
   function isOpenNow(openingHours) {
-    const now = new Date();
-    const currentDay = now.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
-    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-  
-    const todayHours = openingHours[currentDay];
-  
-    if (todayHours && todayHours.open && todayHours.close) {
+  const now = new Date();
+  const currentDay = now.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
+  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const todayHours = openingHours[currentDay];
+  const nextDay = new Date(now);
+  nextDay.setDate(now.getDate() + 1);
+  const nextDayName = nextDay.toLocaleString('en-US', { weekday: 'long' }).toLowerCase();
+
+  if (todayHours && todayHours.open && todayHours.close) {
+    // Check if the closing time is past midnight
+    if (todayHours.close < todayHours.open) {
+      // Handle overnight hours
+      if (
+        (currentTime >= todayHours.open && currentTime <= "23:59") || // Before midnight
+        (currentTime >= "00:00" && currentTime < todayHours.close) // After midnight
+      ) {
+        return { isOpen: true, closesAt: todayHours.close };
+      }
+    } else {
+      // Regular opening and closing times
       if (currentTime >= todayHours.open && currentTime < todayHours.close) {
         return { isOpen: true, closesAt: todayHours.close };
-      } else {
-        return { isOpen: false, closesAt: null };
       }
     }
-    return { isOpen: false, closesAt: null };
   }
+
+  // Handle cases where the current time is after midnight but the restaurant closes late
+  const previousDayHours = openingHours[nextDayName];
+  if (
+    previousDayHours &&
+    previousDayHours.open &&
+    previousDayHours.close < previousDayHours.open // Overnight hours for the previous day
+  ) {
+    if (currentTime >= "00:00" && currentTime < previousDayHours.close) {
+      return { isOpen: true, closesAt: previousDayHours.close };
+    }
+  }
+
+  return { isOpen: false, closesAt: null };
+}
+
   
   function renderRestaurants(restaurants) {
     const restaurantContainer = document.getElementById("restaurantContainer");
