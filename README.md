@@ -1,3 +1,3 @@
 # Foo Delivery
 
-for running the project : docker-compose up --build
+for running the project : docker-compose --env-file config/.env.dev up --build
