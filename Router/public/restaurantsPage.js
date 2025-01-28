@@ -40,7 +40,7 @@ async function fetchRestaurants() {
         const token = localStorage.getItem("token");
 
         // Set up the fetch options, including the Authorization header
-        const response = await fetch("http://localhost:4000/api/restaurants/", {
+        const response = await fetch("/api/restaurants/", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

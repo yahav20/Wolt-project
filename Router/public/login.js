@@ -6,7 +6,7 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
     const errorMessage = document.getElementById('error-message');
 
     try {
-        const response = await fetch('http://localhost:4000/api/users/login', {
+        const response = await fetch('/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ document.getElementById('login-form').addEventListener('submit', async (event) =
         localStorage.setItem('token', token);
 
         // Redirect to the home page
-        window.location.href = 'http://localhost:4000/restaurantsPage.html';
+        window.location.href = 'restaurantsPage.html';
     } catch (error) {
         // Display error message
         errorMessage.textContent = error.message;
