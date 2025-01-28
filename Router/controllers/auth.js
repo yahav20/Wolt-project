@@ -18,7 +18,6 @@ function isAuthenticated(req, res, next) {
       return res.status(403).json({ success: false, message: 'Invalid or expired token' });
     }
     req.user = decoded; // Set user for internal use
-    console.log(decoded);
     req.headers['x-user-id'] = decoded.userId;
     next();
   });

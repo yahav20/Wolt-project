@@ -54,7 +54,6 @@ const getFilteredMenu = async (req, res) => {
 const getAllRestaurantsWithoutMenu = async (req, res) => {
     try {
         const restaurants = await restaurantService.getAllRestaurantsWithoutMenu();
-        console.log(req.headers['x-user-id']);
         res.status(200).json(restaurants);
     } catch (error) {
         res.status(500).json({ error: error.message });

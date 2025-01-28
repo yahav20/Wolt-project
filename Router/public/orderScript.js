@@ -170,7 +170,6 @@ submitOrderButton.addEventListener("click", async () => {
 
   try {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    console.log(token);
     const response = await fetch("/api/orders/", {
       method: "POST",
       headers: { "Content-Type": "application/json" , Authorization: `Bearer ${token}`},
