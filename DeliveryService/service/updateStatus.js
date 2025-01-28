@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const ORDER_SERVICE = "http://localhost:3000/api/orders";
+const ORDER_SERVICE = process.env.ORDERS_SERVICE + `/api/orders`;
 
 async function updateOrderStatus(orderId, status) {
   try {

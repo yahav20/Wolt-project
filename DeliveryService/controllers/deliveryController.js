@@ -41,7 +41,7 @@ async function progressOrderStatus(order, deliveryPerson) {
       };
       
       axios.patch(
-        `http://localhost:3001/api/orders/${order._id}/status`, 
+        process.env.ORDERS_SERVICE + `/api/orders/${order._id}/status`, 
         updatePayload
       );
 
