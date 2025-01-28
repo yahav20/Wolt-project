@@ -15,6 +15,6 @@ app.listen(PORT, () => {
 });
 
 const path = require('path');
-
+app.use('/', dashboardRoute);
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
