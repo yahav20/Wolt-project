@@ -9,7 +9,7 @@ document.getElementById('signup-form').addEventListener('submit', async (event) 
 
     try {
         // Send a POST request to the signup endpoint
-        const response = await fetch('http://localhost:4000/api/users/signup', {
+        const response = await fetch('/api/users/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

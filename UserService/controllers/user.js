@@ -9,8 +9,6 @@ const getUsers = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    console.log();
-    console.log("get user");
     const user = await userService.getUserById(req.params.id);
     if(!user){
         return res.status(404).json({errors : ['Article not found']});
@@ -19,9 +17,6 @@ const getUser = async (req, res) => {
 }
 
 const getUserByToken = async (req, res) => {
-    console.log("here");
-    console.log(req.headers);
-    console.log(req.headers['x-user-id']);
     const user = await userService.getUserById(req.headers['x-user-id']);
     if(!user){
         return res.status(404).json({errors : ['Article not found']});

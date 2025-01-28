@@ -12,7 +12,7 @@ const restaurantId = params.get("restaurantId");
 const api = {
   async getUserById() {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    const response = await fetch(`http://localhost:4000/api/users/test`, {
+    const response = await fetch(`/api/users/test`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,7 @@ const api = {
 
   async getRestaurantById(restaurantId) {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    const response = await fetch(`http://localhost:4000/api/restaurants/${restaurantId}`, {
+    const response = await fetch(`/api/restaurants/${restaurantId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -170,7 +170,6 @@ submitOrderButton.addEventListener("click", async () => {
 
   try {
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    console.log(token);
     const response = await fetch("/api/orders/", {
       method: "POST",
       headers: { "Content-Type": "application/json" , Authorization: `Bearer ${token}`},

@@ -5,7 +5,6 @@ const USER_SERVICE = process.env.USERS_SERVICE + "/users";
 async function getUserById(id) {
   
   try {
-    console.log(`${USER_SERVICE}/${id}`)
     const user = await axios.get(`${USER_SERVICE}/${id}`);
     return user.data;
   } catch (error) {

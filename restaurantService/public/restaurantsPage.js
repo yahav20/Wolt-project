@@ -14,13 +14,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   async function fetchRestaurants() {
     try {
-      const response = await fetch("http://localhost:3002/api/restaurants/");
-      console.log("Response status:", response.status);
+      const response = await fetch(" /api/restaurants/");
       if (!response.ok) {
         throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("Fetched data:", data);
       return data;
     } catch (error) {
       console.error("Error in fetchRestaurants:", error.message);
