@@ -1,4 +1,4 @@
-# Foo Delivery
+# Wolt Project
 
 Foo Delivery is a project aimed at providing efficient and reliable delivery services. The project leverages modern technologies to ensure timely and accurate deliveries.
 
