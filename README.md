@@ -23,9 +23,11 @@ To get started with the project, follow these steps:
     ```sh
     cd Wolt-Project
     ```
-2. Set up the environment variables by creating a `.env` file in the `config` directory and adding the necessary configurations.
+3. Set up the environment variables by creating a `.env` file in the `config` directory and adding the necessary configurations.
 
-4. Run the project using Docker Compose:
+4. Install Docker Engine you can use this link : https://docs.docker.com/engine/install/
+
+5. Run the project using Docker Compose:
     ```sh
     docker-compose --env-file config/.env.dev up --build
     ```
