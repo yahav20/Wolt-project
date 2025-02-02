@@ -23,7 +23,7 @@ To get started with the project, follow these steps:
     ```sh
     cd Wolt-Project
     ```
-3. Set up the environment variables by creating a `.env` file in the `config` directory and adding the necessary configurations.
+3.(*Optional* for changing ports, if changing ports is not necessary this step can be skipped) Set up the environment variables by creating a `.env` file in the `config` directory and adding the necessary configurations.
    
 ````bash
 CONNECTION_STRING=mongodb://mongo:27017/Wolt
